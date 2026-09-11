@@ -1,0 +1,24 @@
+# Standalone database for native pnpm dev; do not merge into production compose.
+name: povod-dev
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    stop_grace_period: 2m
+    environment:
+      PGCTLTIMEOUT: 300
+      POSTGRES_DB: ${POSTGRES_DB:-povod}
+      POSTGRES_USER: ${POSTGRES_USER:-povod}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-replace-with-strong-password}
+    ports:
+      - '127.0.0.1:${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -h 127.0.0.1 -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10m
+volumes:
+  postgres_dev_data:

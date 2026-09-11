@@ -1,0 +1,107 @@
+.timeline {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: clamp(32px, 6vw, 90px);
+  align-items: center;
+}
+.timeline h2,
+.storage h2 {
+  font-size: clamp(1.9rem, 3vw, 2.65rem);
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+  margin: 18px 0 24px;
+}
+.timeline h2 span,
+.storage h2 span {
+  color: var(--color-primary-hover);
+}
+.timeline p,
+.storage p {
+  color: var(--color-muted);
+  line-height: 1.85;
+  margin-bottom: 28px;
+}
+.season {
+  background: #f8e5db;
+  padding: 36px;
+  border-radius: 24px;
+  transform: rotate(1deg);
+}
+.calendar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  color: var(--color-primary-hover);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  font-weight: 800;
+}
+.season h3 {
+  font-size: 1.55rem;
+  line-height: 1.4;
+  margin: 24px 0 16px;
+  letter-spacing: -0.03em;
+}
+.season p {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+.warehouse {
+  background: #f7f0ea;
+}
+.storage {
+  display: grid;
+  grid-template-columns: 1fr 1.08fr;
+  gap: clamp(28px, 5vw, 76px);
+  align-items: center;
+}
+.storage figure {
+  margin: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  background: white;
+}
+.storage img {
+  width: 100%;
+  aspect-ratio: 1.1;
+  object-fit: cover;
+}
+.storage figcaption {
+  font-size: 0.7rem;
+  color: var(--color-muted);
+  line-height: 1.6;
+  padding: 13px 20px;
+}
+.storage ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+  margin: 0 0 30px;
+  font-size: 0.88rem;
+}
+.storage li {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.storage li svg {
+  color: var(--color-primary-hover);
+  flex-shrink: 0;
+}
+@media (max-width: 800px) {
+  .timeline,
+  .storage {
+    grid-template-columns: 1fr;
+  }
+  .storage figure {
+    max-width: 640px;
+  }
+  .storage img {
+    aspect-ratio: 1.5;
+  }
+  .season {
+    padding: 28px;
+    transform: none;
+  }
+}

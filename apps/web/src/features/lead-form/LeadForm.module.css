@@ -1,0 +1,127 @@
+.form {
+  width: 100%;
+}
+.fields {
+  display: grid;
+  gap: 20px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+}
+.honeypot,
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 27px;
+}
+.error {
+  background: #fae8e0;
+  border-radius: var(--radius-sm, 10px);
+  color: #883b26;
+  padding: 14px 17px;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 20px 0 0;
+}
+.success {
+  text-align: center;
+  padding: 35px 12px;
+}
+.successIcon {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  color: var(--color-ink);
+  margin: 0 auto 25px;
+}
+.success h3 {
+  font-family: var(--font-heading, 'Manrope', sans-serif);
+  font-size: clamp(32px, 4vw, 46px);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  margin: 0 0 18px;
+}
+.success p {
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 360px;
+  margin: 0 auto 28px;
+  color: var(--color-muted);
+}
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+  .fields {
+    gap: 17px;
+  }
+  .actions {
+    gap: 14px;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .actions > button {
+    width: 100%;
+  }
+}
+
+.retryNote {
+  margin: 12px 0 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--color-muted);
+}
+
+.commentToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-primary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.commentToggle:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+.comment > div:not([hidden]) {
+  padding-top: 8px;
+}
+.actions > button {
+  width: 100%;
+  justify-content: center;
+}
+.promise {
+  margin: 13px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--color-muted);
+}

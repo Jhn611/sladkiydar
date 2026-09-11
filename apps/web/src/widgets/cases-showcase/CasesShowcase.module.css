@@ -1,0 +1,19 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.note {
+  color: var(--color-muted);
+  font-size: 0.71rem;
+  margin-top: 1.8rem;
+}
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 2.3rem;
+  }
+  .note {
+    font-size: 0.68rem;
+  }
+}

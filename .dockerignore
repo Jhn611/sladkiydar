@@ -1,0 +1,17 @@
+.git
+**/node_modules
+**/dist
+**/coverage
+**/.vite
+**/test-results
+**/playwright-report
+.env
+.env.*
+!.env.example
+.cache
+.tools
+.codex
+.agents
+backups
+*.log
+*.tsbuildinfo

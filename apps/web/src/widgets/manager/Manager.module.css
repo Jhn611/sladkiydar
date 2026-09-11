@@ -1,0 +1,81 @@
+.section {
+  background: #f7e9df;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 0.8fr 1.25fr;
+  gap: clamp(32px, 7vw, 110px);
+  align-items: center;
+}
+.layout figure {
+  margin: 0;
+  background: #fff9f3;
+  border-radius: 150px 150px 24px 24px;
+  overflow: hidden;
+  max-width: 400px;
+}
+.layout img {
+  width: 100%;
+  aspect-ratio: 0.85;
+  object-fit: cover;
+  object-position: top;
+}
+.layout figcaption {
+  padding: 14px 24px;
+  font-size: 0.69rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+.copy h2 {
+  font-size: 3rem;
+  margin: 22px 0;
+}
+.copy h2 span {
+  display: block;
+  font-size: 1rem;
+  letter-spacing: 0;
+  margin-top: 10px;
+  color: var(--color-muted);
+}
+.copy blockquote {
+  font-size: clamp(1.25rem, 2.1vw, 1.9rem);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+  margin: 25px 0;
+}
+.details {
+  display: grid;
+  gap: 12px;
+  margin: 26px 0 32px;
+  font-size: 0.85rem;
+}
+.details span {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.details svg {
+  color: var(--color-primary-hover);
+}
+.copy small {
+  display: block;
+  margin-top: 14px;
+  color: var(--color-muted);
+  font-size: 0.72rem;
+}
+@media (max-width: 760px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .layout figure {
+    max-width: 310px;
+    margin: auto;
+  }
+  .copy h2 {
+    font-size: 2.5rem;
+  }
+  .layout img {
+    aspect-ratio: 1;
+  }
+}

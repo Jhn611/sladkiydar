@@ -1,0 +1,185 @@
+.section {
+  background: #fff2ee;
+}
+.intro {
+  text-align: center;
+}
+.intro > span {
+  justify-content: center;
+}
+.intro h2 {
+  font-size: clamp(1.8rem, 3.1vw, 2.9rem);
+  margin-top: 1rem;
+}
+.intro h2 span {
+  color: var(--color-primary);
+}
+.layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1.4rem;
+  margin-top: 2.5rem;
+  align-items: stretch;
+}
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.cards article {
+  padding: 1.7rem;
+  background: white;
+  border: 1px solid #f1dfd7;
+  border-radius: var(--radius-lg);
+}
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.3rem;
+}
+.cardTop small {
+  font-size: 0.57rem;
+  color: var(--color-muted);
+}
+.cardTop svg {
+  color: var(--color-primary);
+}
+.cards h3 {
+  font-size: 1.07rem;
+  letter-spacing: -0.03em;
+  line-height: 1.3;
+  max-width: 230px;
+}
+.cards p {
+  font-size: 0.76rem;
+  line-height: 1.8;
+  color: var(--color-muted);
+  margin-top: 0.75rem;
+}
+.visual {
+  margin: 0;
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  min-height: 385px;
+}
+.visual > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.visual figcaption {
+  position: absolute;
+  bottom: 1.3rem;
+  left: 1.3rem;
+  font-size: 0.85rem;
+  font-weight: 650;
+  background: #fffffff0;
+  padding: 0.85rem 1.2rem;
+  border-radius: var(--radius-md);
+  line-height: 1.5;
+}
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 1.8rem;
+}
+.bottom p {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.71rem;
+}
+.bottom p svg {
+  color: var(--color-primary);
+}
+.bottom button {
+  font-size: 0.76rem;
+}
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr 0.75fr;
+  }
+  .cards {
+    gap: 0.8rem;
+  }
+  .cards article {
+    padding: 1.3rem;
+  }
+  .cards h3 {
+    font-size: 0.97rem;
+  }
+  .cardTop {
+    align-items: flex-start;
+  }
+  .cardTop small {
+    font-size: 0.59rem;
+  }
+}
+@media (max-width: 767px) {
+  .intro h2 {
+    font-size: 1.9rem;
+  }
+  .intro h2 br {
+    display: none;
+  }
+  .layout {
+    grid-template-columns: 1fr;
+    margin-top: 1.8rem;
+  }
+  .cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+  }
+  .cards article {
+    padding: 1.2rem 1rem;
+  }
+  .cards h3 {
+    font-size: 1rem;
+  }
+  .cards p {
+    font-size: 0.73rem;
+  }
+  .cardTop {
+    margin-bottom: 0.85rem;
+  }
+  .visual {
+    min-height: 0;
+    aspect-ratio: 1.5;
+  }
+  .visual figcaption {
+    font-size: 0.75rem;
+    bottom: 1rem;
+    left: 1rem;
+    padding: 0.6rem 0.9rem;
+  }
+  .bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.1rem;
+  }
+  .bottom p {
+    font-size: 0.68rem;
+  }
+  .bottom button {
+    width: 100%;
+  }
+}
+@media (max-width: 400px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .cards article {
+    padding: 1.4rem;
+  }
+  .cards h3 {
+    max-width: none;
+  }
+  .cards p {
+    font-size: 0.8rem;
+  }
+}

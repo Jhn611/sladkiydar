@@ -1,0 +1,27 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 24px;
+  margin: 36px 0;
+}
+.grid figure {
+  margin: 0;
+  padding: 28px;
+  background: white;
+  border: 1px solid var(--color-line);
+  border-radius: 22px;
+}
+.grid blockquote {
+  margin: 0 0 24px;
+  line-height: 1.8;
+}
+.grid figcaption {
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+.grid figcaption span {
+  display: block;
+  font-weight: 400;
+  color: var(--color-muted);
+  margin-top: 6px;
+}

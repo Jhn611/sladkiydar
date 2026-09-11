@@ -1,0 +1,172 @@
+name: povod
+
+x-backend: &backend
+  image: povod-api:local
+  build:
+    context: .
+    dockerfile: apps/api/Dockerfile
+  init: true
+  restart: unless-stopped
+  environment: &backend-env
+    NODE_ENV: production
+    HOST: 0.0.0.0
+    PORT: 3001
+
+    PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:?Set PUBLIC_ORIGIN in .env}
+    TRUST_PROXY_HOPS: 1
+    LOG_LEVEL: ${LOG_LEVEL:-info}
+    RATE_LIMIT_MAX: ${RATE_LIMIT_MAX:-8}
+    MIGRATIONS_DIR: ./drizzle
+  security_opt:
+    - no-new-privileges:true
+  read_only: true
+  tmpfs:
+    - /tmp:size=16m,mode=1777
+  networks:
+    - backend
+  logging:
+    driver: json-file
+    options:
+      max-size: 10m
+      max-file: '3'
+
+services:
+  caddy:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    environment:
+      DOMAIN: ${DOMAIN:?Set DOMAIN in .env}
+    volumes:
+      - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      web:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - frontend
+      - backend
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+
+  web:
+    image: povod-web:local
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        VITE_SITE_URL: ${VITE_SITE_URL:?Set VITE_SITE_URL in .env}
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - frontend
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '-O', '/dev/null', 'http://127.0.0.1:8080/healthz']
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+  migrate:
+    <<: *backend
+    command: ['node', 'dist/migrate.js']
+    environment:
+      <<: *backend-env
+      DATABASE_URL: postgresql://${POSTGRES_USER:-povod}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/${POSTGRES_DB:-povod}
+      DB_API_USER: ${DB_API_USER:-povod_api}
+      DB_API_PASSWORD: ${DB_API_PASSWORD:?Set DB_API_PASSWORD in .env}
+      DB_WORKER_USER: ${DB_WORKER_USER:-povod_worker}
+      DB_WORKER_PASSWORD: ${DB_WORKER_PASSWORD:?Set DB_WORKER_PASSWORD in .env}
+    restart: 'no'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    <<: *backend
+    command: ['node', 'dist/api.js']
+    environment:
+      <<: *backend-env
+      DATABASE_URL: postgresql://${DB_API_USER:-povod_api}:${DB_API_PASSWORD:?Set DB_API_PASSWORD in .env}@postgres:5432/${POSTGRES_DB:-povod}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:3001/api/health/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    stop_grace_period: 30s
+
+  worker:
+    <<: *backend
+    command: ['node', 'dist/worker.js']
+    environment:
+      <<: *backend-env
+      DATABASE_URL: postgresql://${DB_WORKER_USER:-povod_worker}:${DB_WORKER_PASSWORD:?Set DB_WORKER_PASSWORD in .env}@postgres:5432/${POSTGRES_DB:-povod}
+      VK_GROUP_TOKEN: ${VK_GROUP_TOKEN:-}
+      VK_GROUP_ID: ${VK_GROUP_ID:-}
+      VK_PEER_ID: ${VK_PEER_ID:-}
+      VK_API_VERSION: ${VK_API_VERSION:-5.199}
+      WORKER_POLL_MS: ${WORKER_POLL_MS:-3000}
+      WORKER_LOCK_MS: ${WORKER_LOCK_MS:-120000}
+      VK_TIMEOUT_MS: ${VK_TIMEOUT_MS:-15000}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    stop_grace_period: 30s
+
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    stop_grace_period: 2m
+    environment:
+      PGCTLTIMEOUT: 300
+      POSTGRES_DB: ${POSTGRES_DB:-povod}
+      POSTGRES_USER: ${POSTGRES_USER:-povod}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -h 127.0.0.1 -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10m
+
+networks:
+  frontend:
+  backend:
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:

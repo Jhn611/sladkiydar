@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1788998400000,
+      "tag": "0000_leads_outbox",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789084800000,
+      "tag": "0001_simplify_lead_fields",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789084800002,
+      "tag": "0002_vk_notifications",
+      "breakpoints": true
+    }
+  ]
+}
