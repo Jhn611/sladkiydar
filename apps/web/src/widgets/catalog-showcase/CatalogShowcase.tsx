@@ -1,5 +1,6 @@
-﻿import { useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from 'react';
+import { useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from 'react';
 import { Link } from 'react-router-dom';
+import { useCarouselAutoplay } from '../../shared/lib/useCarouselAutoplay';
 import { getProductCount, products } from '../../entities/product/model/products';
 import { useLeadModal } from '../../features/open-lead-modal/useLeadModal';
 import { Container } from '../../shared/ui/Container';
@@ -27,8 +28,13 @@ export function CatalogShowcase() {
   const drag = useRef<DragState | null>(null);
   const suppressPointerClick = useRef(false);
   const selected = products[selectedIndex]!;
+  const autoplay = useCarouselAutoplay({
+    onAdvance: () => selectProduct((selectedIndex + 1) % products.length, false, true),
+    delay: 7_000,
+  });
 
-  function selectProduct(index: number, focus = false) {
+  function selectProduct(index: number, focus = false, automatic = false) {
+    if (!automatic) autoplay.reset();
     const next = Math.max(0, Math.min(products.length - 1, index));
     setSelectedIndex(next);
     const button = selectors.current[next];
@@ -37,7 +43,7 @@ export function CatalogShowcase() {
       const offset = button.getBoundingClientRect().left - gallery.getBoundingClientRect().left;
       gallery.scrollTo?.({
         left: gallery.scrollLeft + offset - 6,
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        behavior: 'smooth',
       });
       if (focus) button.focus({ preventScroll: true });
     }
@@ -130,118 +136,132 @@ export function CatalogShowcase() {
             Весь каталог <Icon name="arrow-up-right" size={19} />
           </Link>
         </div>
-        <div
-          role="region"
-          aria-roledescription="карусель"
-          aria-label="Примеры подарочных наборов"
-          className={s.gallery}
-        >
-          <div className={s.controls}>
-            <span className={s.dragHint}>Потяните в сторону или выберите набор</span>
-            <div className={s.arrows}>
-              <span aria-live="polite" aria-atomic="true">
-                {selectedIndex + 1} / {products.length}
-              </span>
-              <IconButton
-                label="Предыдущий набор"
-                name="arrow-left"
-                disabled={selectedIndex === 0}
-                onClick={() => selectProduct(selectedIndex - 1)}
-              />
-              <IconButton
-                label="Следующий набор"
-                name="arrow-right"
-                disabled={selectedIndex === products.length - 1}
-                onClick={() => selectProduct(selectedIndex + 1)}
-              />
-            </div>
-          </div>
-          <ul
-            ref={track}
-            className={s.track}
-            aria-label="Выберите набор"
-            data-dragging={isDragging || undefined}
-            onPointerDown={startDrag}
-            onPointerMove={moveDrag}
-            onPointerUp={finishDrag}
-            onPointerCancel={finishDrag}
-            onLostPointerCapture={finishDrag}
-            onPointerLeave={(event) => {
-              if (!drag.current?.dragging) finishDrag(event);
-            }}
-            onClickCapture={preventDraggedClick}
-            onDragStart={(event) => event.preventDefault()}
+        <div ref={autoplay.ref} {...autoplay.interactionProps} className={s.carousel}>
+          <div
+            role="region"
+            aria-roledescription="карусель"
+            aria-label="Примеры подарочных наборов"
+            className={s.gallery}
           >
-            {products.map((product, index) => (
-              <li key={product.id}>
-                <button
-                  ref={(element) => {
-                    selectors.current[index] = element;
-                  }}
-                  type="button"
-                  className={`${s.product} ${selectedIndex === index ? s.selected : ''}`}
-                  aria-label={`Посмотреть состав набора «${product.name}»`}
-                  aria-pressed={selectedIndex === index}
-                  aria-controls="showcase-details"
-                  onClick={() => selectProduct(index)}
-                  onKeyDown={(event) => handleKeys(event, index)}
-                >
-                  <span className={s.image}>
-                    <img
-                      src={product.image}
-                      srcSet={`${product.image.replace('.webp', '-768.webp')} 768w, ${product.image} 1536w`}
-                      sizes="(max-width: 600px) 80vw, (max-width: 1000px) 48vw, 32vw"
-                      alt={product.imageAlt}
-                      width={1536}
-                      height={1024}
-                      loading="lazy"
-                      draggable={false}
-                    />
-                    <span className={s.badge}>{product.occasions[0]}</span>
-                    <span className={s.zoom}>
-                      <Icon name={selectedIndex === index ? 'check' : 'plus'} size={22} />
+            <div className={s.controls}>
+              <span className={s.dragHint}>Потяните в сторону или выберите набор</span>
+              <div className={s.arrows}>
+                <span aria-live={autoplay.isPlaying ? 'off' : 'polite'} aria-atomic="true">
+                  {selectedIndex + 1} / {products.length}
+                </span>
+                <IconButton
+                  name={autoplay.enabled ? 'pause' : 'play'}
+                  label={
+                    autoplay.enabled ? 'Приостановить смену наборов' : 'Включить смену наборов'
+                  }
+                  onClick={autoplay.toggle}
+                />
+                <IconButton
+                  label="Предыдущий набор"
+                  name="arrow-left"
+                  disabled={selectedIndex === 0}
+                  onClick={() => selectProduct(selectedIndex - 1)}
+                />
+                <IconButton
+                  label="Следующий набор"
+                  name="arrow-right"
+                  disabled={selectedIndex === products.length - 1}
+                  onClick={() => selectProduct(selectedIndex + 1)}
+                />
+              </div>
+            </div>
+            <ul
+              ref={track}
+              className={s.track}
+              aria-label="Выберите набор"
+              data-dragging={isDragging || undefined}
+              onPointerDown={startDrag}
+              onPointerMove={moveDrag}
+              onPointerUp={finishDrag}
+              onPointerCancel={finishDrag}
+              onLostPointerCapture={finishDrag}
+              onPointerLeave={(event) => {
+                if (!drag.current?.dragging) finishDrag(event);
+              }}
+              onClickCapture={preventDraggedClick}
+              onDragStart={(event) => event.preventDefault()}
+            >
+              {products.map((product, index) => (
+                <li key={product.id}>
+                  <button
+                    ref={(element) => {
+                      selectors.current[index] = element;
+                    }}
+                    type="button"
+                    className={`${s.product} ${selectedIndex === index ? s.selected : ''}`}
+                    aria-label={`Посмотреть состав набора «${product.name}»`}
+                    aria-pressed={selectedIndex === index}
+                    aria-controls="showcase-details"
+                    onClick={() => selectProduct(index)}
+                    onKeyDown={(event) => handleKeys(event, index)}
+                  >
+                    <span className={s.image}>
+                      <img
+                        src={product.image}
+                        srcSet={`${product.image.replace('.webp', '-768.webp')} 768w, ${product.image} 1536w`}
+                        sizes="(max-width: 600px) 80vw, (max-width: 1000px) 48vw, 32vw"
+                        alt={product.imageAlt}
+                        width={1536}
+                        height={1024}
+                        loading="lazy"
+                        draggable={false}
+                      />
+                      <span className={s.badge}>{product.occasions[0]}</span>
+                      <span className={s.zoom}>
+                        <Icon name={selectedIndex === index ? 'check' : 'plus'} size={22} />
+                      </span>
                     </span>
-                  </span>
-                  <span className={s.cardCopy}>
-                    <span className={s.productName}>{product.name}</span>
-                    <span>
-                      Посмотреть состав <Icon name="arrow-up-right" size={17} />
+                    <span className={s.cardCopy}>
+                      <span className={s.productName}>{product.name}</span>
+                      <span>
+                        Посмотреть состав <Icon name="arrow-up-right" size={17} />
+                      </span>
                     </span>
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div id="showcase-details" className={s.details} aria-live="polite" aria-atomic="true">
-          <div className={s.detailIntro}>
-            <span className={s.detailLabel}>Внутри — любимый Kinder</span>
-            <h3>{selected.name}</h3>
-            <p>{selected.description}</p>
-            <span className={s.count}>Около {getProductCount(selected)} изделий в наборе</span>
-          </div>
-          <div className={s.composition}>
-            <h4>Пример состава</h4>
-            <ul>
-              {selected.contents.map((item) => (
-                <li key={item.name}>
-                  <Icon name="check" size={16} />
-                  <span>{item.name}</span>
-                  <b>{item.quantity} шт.</b>
+                  </button>
                 </li>
               ))}
             </ul>
-            <p>{selected.packaging}. Финальное наполнение согласуем с вами.</p>
           </div>
-          <div className={s.request}>
-            <span className={s.detailLabel}>Подойдёт для повода</span>
-            <p>{selected.occasions.join(' · ')}</p>
-            <Button onClick={() => openLeadModal('showcase-product:' + selected.id)}>
-              Узнать цену этого набора <Icon name="arrow-up-right" size={18} />
-            </Button>
-            <span className={s.documents}>
-              <Icon name="shield" size={16} /> Оригинальная продукция с документами
-            </span>
+          <div
+            id="showcase-details"
+            className={s.details}
+            aria-live={autoplay.isPlaying ? 'off' : 'polite'}
+            aria-atomic="true"
+          >
+            <div className={s.detailIntro}>
+              <span className={s.detailLabel}>Внутри — любимый Kinder</span>
+              <h3>{selected.name}</h3>
+              <p>{selected.description}</p>
+              <span className={s.count}>Около {getProductCount(selected)} изделий в наборе</span>
+            </div>
+            <div className={s.composition}>
+              <h4>Пример состава</h4>
+              <ul>
+                {selected.contents.map((item) => (
+                  <li key={item.name}>
+                    <Icon name="check" size={16} />
+                    <span>{item.name}</span>
+                    <b>{item.quantity} шт.</b>
+                  </li>
+                ))}
+              </ul>
+              <p>{selected.packaging}. Финальное наполнение согласуем с вами.</p>
+            </div>
+            <div className={s.request}>
+              <span className={s.detailLabel}>Подойдёт для повода</span>
+              <p>{selected.occasions.join(' · ')}</p>
+              <Button onClick={() => openLeadModal('showcase-product:' + selected.id)}>
+                Узнать цену этого набора <Icon name="arrow-up-right" size={18} />
+              </Button>
+              <span className={s.documents}>
+                <Icon name="shield" size={16} /> Оригинальная продукция с документами
+              </span>
+            </div>
           </div>
         </div>
         <p className={s.disclosure}>

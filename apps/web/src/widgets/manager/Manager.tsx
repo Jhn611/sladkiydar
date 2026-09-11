@@ -18,6 +18,7 @@ export function Manager() {
               width="900"
               height="1200"
               loading="lazy"
+              decoding="async"
             />
             <figcaption>Заменить на реальное фото и имя менеджера перед публикацией.</figcaption>
           </figure>

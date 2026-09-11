@@ -72,12 +72,6 @@
   line-height: 1.6;
   margin: 0;
 }
-@media (prefers-reduced-motion: reduce) {
-  .imageWrap img,
-  .arrow {
-    transition: none;
-  }
-}
 @media (max-width: 600px) {
   .imageWrap {
     border-radius: 18px;

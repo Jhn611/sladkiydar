@@ -1,9 +1,10 @@
-﻿import { fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { LeadModalContext } from '../../features/open-lead-modal/useLeadModal';
 import { CatalogShowcase } from './CatalogShowcase';
+import { products } from '../../entities/product/model/products';
 
 function mountShowcase() {
   const openLeadModal = vi.fn();
@@ -45,7 +46,10 @@ function mockCapture(track: HTMLElement) {
   return { capture, release };
 }
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.useRealTimers();
+});
 
 describe('showcase navigation', () => {
   it('changes composition and inquiry source using next controls and keyboard selection', async () => {
@@ -61,7 +65,7 @@ describe('showcase navigation', () => {
     const second = screen.getByRole('button', {
       name: 'Посмотреть состав набора «Спасибо, команда!»',
     });
-    second.focus();
+    act(() => second.focus());
     await user.keyboard('{End}');
     expect(
       screen.getByRole('button', { name: 'Посмотреть состав набора «Большой повод»' }),
@@ -117,7 +121,7 @@ describe('showcase navigation', () => {
       expect(track).not.toHaveAttribute('data-dragging');
       expect(track.style.scrollSnapType).toBe('');
       // Keyboard-generated clicks have detail=0 and must not be suppressed by a prior drag.
-      second.focus();
+      act(() => second.focus());
       await user.keyboard('{Enter}');
       expect(screen.getByRole('heading', { name: 'Спасибо, команда!' })).toBeVisible();
       await user.click(screen.getByRole('button', { name: 'Узнать цену этого набора' }));
@@ -139,7 +143,7 @@ describe('showcase navigation', () => {
     expect(track).not.toHaveAttribute('data-dragging');
   });
 
-  it('uses immediate scrolling for reduced motion while retaining keyboard focus', async () => {
+  it('keeps smooth scrolling and keyboard focus even when the OS reduces motion', async () => {
     vi.stubGlobal(
       'matchMedia',
       vi.fn(() => ({ matches: true }) as MediaQueryList),
@@ -148,11 +152,42 @@ describe('showcase navigation', () => {
     const track = screen.getByRole('list', { name: 'Выберите набор' });
     const scrollTo = vi.fn();
     Object.assign(track, { scrollTo });
-    screen.getByRole('button', { name: 'Посмотреть состав набора «Маленькая радость»' }).focus();
+    act(() =>
+      screen.getByRole('button', { name: 'Посмотреть состав набора «Маленькая радость»' }).focus(),
+    );
     await user.keyboard('{ArrowRight}');
-    expect(scrollTo).toHaveBeenLastCalledWith(expect.objectContaining({ behavior: 'auto' }));
+    expect(scrollTo).toHaveBeenLastCalledWith(expect.objectContaining({ behavior: 'smooth' }));
     expect(
       screen.getByRole('button', { name: 'Посмотреть состав набора «Спасибо, команда!»' }),
     ).toHaveFocus();
   });
+});
+
+it('automatically changes the selected composition and loops without vertical scrolling', () => {
+  vi.useFakeTimers();
+  mountShowcase();
+  const track = screen.getByRole('list', { name: 'Выберите набор' });
+  const scrollTo = vi.fn();
+  Object.assign(track, { scrollTo });
+  act(() => vi.advanceTimersByTime(7_000));
+  expect(screen.getByRole('heading', { name: 'Спасибо, команда!' })).toBeVisible();
+  expect(screen.getByText('Около 10 изделий в наборе')).toBeVisible();
+  expect(document.getElementById('showcase-details')).toHaveAttribute('aria-live', 'off');
+  expect(scrollTo).toHaveBeenLastCalledWith({ left: -6, behavior: 'smooth' });
+  expect(window.scrollY).toBe(0);
+  for (let i = 1; i < products.length; i++) act(() => vi.advanceTimersByTime(7_000));
+  expect(screen.getByRole('heading', { name: 'Маленькая радость' })).toBeVisible();
+});
+
+it('keeps the selected product stable while its price request has focus', () => {
+  vi.useFakeTimers();
+  mountShowcase();
+  const request = screen.getByRole('button', { name: 'Узнать цену этого набора' });
+  act(() => request.focus());
+  act(() => vi.advanceTimersByTime(21_000));
+  expect(screen.getByRole('heading', { name: 'Маленькая радость' })).toBeVisible();
+  expect(document.getElementById('showcase-details')).toHaveAttribute('aria-live', 'polite');
+  act(() => request.blur());
+  act(() => vi.advanceTimersByTime(7_000));
+  expect(screen.getByRole('heading', { name: 'Спасибо, команда!' })).toBeVisible();
 });

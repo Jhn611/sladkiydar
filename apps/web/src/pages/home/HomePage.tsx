@@ -1,3 +1,4 @@
+import { AutomaticLeadPrompt } from '../../features/open-lead-modal/AutomaticLeadPrompt';
 import { Seo } from '../../shared/lib/Seo';
 import { Hero } from '../../widgets/hero/Hero';
 import { Benefits } from '../../widgets/benefits/Benefits';
@@ -20,6 +21,7 @@ export default function HomePage() {
         description="Оригинальный Kinder в подарочных наборах для компаний, школ, родителей и перепродажи. Готовые и индивидуальные наборы, три уровня опта, доставка по России."
         path="/"
       />
+      <AutomaticLeadPrompt />
       <Hero />
       <Benefits />
       <HolidayCalendar />

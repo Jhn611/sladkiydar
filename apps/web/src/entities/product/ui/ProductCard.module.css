@@ -103,11 +103,6 @@
   min-height: 44px;
   gap: 0.5rem;
 }
-@media (prefers-reduced-motion: reduce) {
-  .imageWrap img {
-    transition: none;
-  }
-}
 @media (max-width: 600px) {
   .content {
     padding: var(--space-5);

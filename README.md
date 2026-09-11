@@ -236,10 +236,14 @@ docker compose cp postgres:/tmp/povod.dump ./backups/povod.dump
 ```sh
 docker compose cp ./backups/povod.dump postgres:/tmp/restore.dump
 docker compose exec -T postgres sh -c 'createdb -U "$POSTGRES_USER" povod_restore'
-docker compose exec -T postgres sh -c 'pg_restore --no-owner --exit-on-error -U "$POSTGRES_USER" -d povod_restore /tmp/restore.dump'
+docker compose exec -T postgres sh -c 'pg_restore --no-owner --no-privileges --exit-on-error -U "$POSTGRES_USER" -d povod_restore /tmp/restore.dump'
 ```
 
-Проверьте восстановленные таблицы и количество заявок. Для переключения запланируйте короткое обслуживание: остановите `api` и `worker`, измените `POSTGRES_DB=povod_restore` в `.env`, затем выполните `docker compose up -d --wait`. Старая база остаётся на месте. Новые заявки, появившиеся после backup, в копию не входят; учтите это до переключения.
+Проверьте восстановленные таблицы, количество заявок, очередь и identity sequence `random_id`. Дамп одной базы не содержит глобальные роли PostgreSQL; параметры `--no-owner --no-privileges` оставляют назначение владельцев и прав текущему администратору и команде настройки ролей.
+
+Для переключения запланируйте короткое обслуживание: остановите `api` и `worker`, задайте `POSTGRES_DB=povod_restore`, **новые** `DB_API_USER`/`DB_WORKER_USER` и отдельные пароли в `.env`. Существующие роли привязаны к OID старой базы и намеренно не принимаются для другой базы того же кластера. При native запуске синхронно обновите все три URL. Выполните `docker compose run --rm migrate`, проверьте права и данные, затем `docker compose up -d --no-deps --force-recreate api worker`. Полный порядок и отличие восстановления в новый кластер — в [инструкции доступа к БД](docs/database-access.md#резервная-копия-и-восстановление).
+
+Старая база и её роли остаются на месте. Новые заявки, появившиеся после backup, в копию не входят: для финального переноса сделайте актуальную копию при остановленных API/worker. Worker проверочной копии не подключайте к реальному VK-получателю, чтобы не отправить сохранённую очередь повторно.
 
 ## Как расширять
 

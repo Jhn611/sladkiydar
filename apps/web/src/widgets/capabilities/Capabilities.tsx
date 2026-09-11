@@ -29,6 +29,7 @@ export function Capabilities() {
               width="1200"
               height="800"
               loading="lazy"
+              decoding="async"
             />
             <div>
               <span>01 / Упаковка</span>
@@ -46,6 +47,7 @@ export function Capabilities() {
               width="1200"
               height="800"
               loading="lazy"
+              decoding="async"
             />
             <div>
               <span>02 / Наполнение</span>

@@ -26,7 +26,7 @@ export function Modal({
     return () => {
       if (dialog.open) dialog.close();
       document.body.style.overflow = previousOverflow;
-      if (previousFocus?.isConnected) previousFocus.focus();
+      if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true });
     };
   }, [open]);
 

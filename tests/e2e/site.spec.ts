@@ -1,5 +1,14 @@
 import { test, expect, type Locator } from '@playwright/test';
 
+// These regression checks exercise manual flows; automatic prompts have dedicated browser tests.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    sessionStorage.setItem(
+      'sladkiy-dar:lead-prompt:v1',
+      JSON.stringify({ consumed: true, elapsedMs: 0 }),
+    );
+  });
+});
 const widths = [375, 430, 768, 1024, 1280, 1440, 1920];
 const paths = ['/', '/catalog', '/contacts', '/privacy', '/agreement'];
 const modalTitle = 'Пришлём прайс-лист и подберём набор под ваш бюджет';

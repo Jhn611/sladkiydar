@@ -314,3 +314,157 @@
     padding-left: 0.4rem;
   }
 }
+
+.visual > img {
+  animation:
+    photo-appear 650ms ease-out both,
+    photo-drift 6s ease-out both;
+  animation-play-state: running, paused;
+}
+.visual[data-playing='true'] > img {
+  animation-play-state: running, running;
+}
+.visual > .autoplay {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 42px;
+  height: 42px;
+  background: #fffffff0;
+  backdrop-filter: blur(8px);
+  z-index: 1;
+}
+.visual > .autoplay:disabled {
+  opacity: 0.6;
+}
+@keyframes photo-appear {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes photo-drift {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.04);
+  }
+}
+
+/* Follow the finger without interfering with the photo's gentle zoom. */
+.visual {
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
+}
+.visual > img {
+  user-select: none;
+  -webkit-user-drag: none;
+  translate: var(--hero-drag-x, 0px) 0;
+  transition: translate 220ms ease;
+}
+.visual[data-dragging='true'] > img {
+  transition: none;
+}
+@media (pointer: fine) {
+  .visual {
+    cursor: grab;
+  }
+  .visual[data-dragging='true'] {
+    cursor: grabbing;
+  }
+}
+.photoAccents {
+  position: absolute;
+  top: 1.4rem;
+  left: 1.4rem;
+  pointer-events: none;
+}
+.floatingHeart {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  color: var(--color-primary);
+  background: #fff5efed;
+  border: 1px solid #ffffffd9;
+  border-radius: 50%;
+  box-shadow: 0 8px 24px #7e301c12;
+  animation: floating-heart 4.2s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.floatingSparkle {
+  position: absolute;
+  top: 64px;
+  left: 46px;
+  color: var(--color-primary);
+  filter: drop-shadow(0 1px 4px #fff);
+  animation: sparkle-turn 5.6s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.social > svg {
+  transform-origin: center;
+  animation: heart-beat 2.8s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.hero[data-motion-active='true'] .floatingHeart,
+.hero[data-motion-active='true'] .floatingSparkle,
+.hero[data-motion-active='true'] .social > svg {
+  animation-play-state: running;
+}
+@keyframes floating-heart {
+  0%,
+  100% {
+    transform: translateY(3px) rotate(-10deg);
+  }
+  50% {
+    transform: translateY(16px) rotate(9deg);
+  }
+}
+@keyframes sparkle-turn {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(0.85);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-8px) rotate(90deg) scale(1.15);
+    opacity: 1;
+  }
+}
+@keyframes heart-beat {
+  0%,
+  45%,
+  100% {
+    transform: rotate(-12deg) scale(1);
+  }
+  15%,
+  32% {
+    transform: rotate(-6deg) scale(1.24);
+  }
+  24% {
+    transform: rotate(-12deg) scale(1.08);
+  }
+}
+@media (max-width: 600px) {
+  .photoAccents {
+    top: 1rem;
+    left: 1rem;
+  }
+  .floatingHeart {
+    width: 48px;
+    height: 48px;
+  }
+  .floatingHeart > svg {
+    width: 27px;
+    height: 27px;
+  }
+  .floatingSparkle {
+    top: 53px;
+    left: 37px;
+    width: 18px;
+    height: 18px;
+  }
+}

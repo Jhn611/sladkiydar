@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
 import { loadEnv } from 'vite';
 const env = loadEnv('production', '../..', 'VITE_');
 const origin = new URL(process.env.VITE_SITE_URL || env.VITE_SITE_URL || 'http://localhost');
@@ -54,6 +54,17 @@ const escape = (value) =>
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;');
 const template = await readFile('dist/index.html', 'utf8');
+// These fonts are used on every route. Start them before CSS/JS discovery to avoid layout shifts.
+const fontPreloads = (await readdir('dist/assets'))
+  .filter((file) => /^manrope-(?:cyrillic|latin)-wght-normal-.+\.woff2$/.test(file))
+  .map(
+    (file) =>
+      '<link rel="preload" href="/assets/' + file + '" as="font" type="font/woff2" crossorigin/>',
+  )
+  .join('');
+// Match Hero.tsx sizes so the browser reuses this request, including mobile DPR 2.
+const heroPreload =
+  '<link rel="preload" as="image" href="/images/hero-gifts.webp" imagesrcset="/images/hero-gifts-768.webp 768w, /images/hero-gifts.webp 1536w" imagesizes="(max-width: 500px) calc(100vw - 40px), (max-width: 950px) 92vw, (max-width: 1435px) 44vw, 634px" fetchpriority="high"/>';
 for (const [path, pageTitle, description] of routes) {
   const title = pageTitle.includes('Сладкий Дар') ? pageTitle : pageTitle + ' — Сладкий Дар';
   const canonical = new URL(path, origin).href;
@@ -75,7 +86,7 @@ for (const [path, pageTitle, description] of routes) {
       /<meta name="description"[^>]*>/,
       '<meta name="description" data-rh="true" content="' + escape(description) + '"/>',
     )
-    .replace('</head>', meta + '</head>');
+    .replace('</head>', fontPreloads + (path === '/' ? heroPreload : '') + meta + '</head>');
   const dir = path === '/' ? 'dist' : 'dist' + path;
   await mkdir(dir, { recursive: true });
   await writeFile(dir + '/index.html', html);

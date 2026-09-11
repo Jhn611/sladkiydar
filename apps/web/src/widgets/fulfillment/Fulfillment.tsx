@@ -61,6 +61,7 @@ export function Warehouse() {
               width="1200"
               height="800"
               loading="lazy"
+              decoding="async"
             />
             <figcaption>Иллюстрация. Фото нашего склада появятся здесь позже.</figcaption>
           </figure>

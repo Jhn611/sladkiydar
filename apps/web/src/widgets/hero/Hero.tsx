@@ -1,4 +1,13 @@
-import { useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type MouseEvent,
+  type PointerEvent,
+} from 'react';
+import { useSectionVisibility } from '../../shared/hooks/useSectionVisibility';
+import { useCarouselAutoplay } from '../../shared/lib/useCarouselAutoplay';
 import { Container } from '../../shared/ui/Container';
 import { Button } from '../../shared/ui/Button';
 import { Icon } from '../../shared/ui/Icon';
@@ -30,14 +39,140 @@ const slides = [
     alt: 'Вариант праздничной коробки со сладостями и красной лентой',
   },
 ];
+type SwipeGesture = {
+  pointerId: number;
+  startX: number;
+  startY: number;
+  threshold: number;
+  horizontal: boolean;
+  vertical: boolean;
+};
+
 export function Hero() {
+  const { ref: heroRef, motionActive } = useSectionVisibility<HTMLElement>();
   const [slide, setSlide] = useState(0);
+  const [manualSlide, setManualSlide] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const gesture = useRef<SwipeGesture | null>(null);
+  const suppressPointerClick = useRef(false);
   const { openLeadModal } = useLeadModal();
   const selected = slides[slide]!;
-  const change = (delta: number) =>
-    setSlide((index) => (index + delta + slides.length) % slides.length);
+  const autoplay = useCarouselAutoplay({
+    onAdvance: () => {
+      setManualSlide(false);
+      setSlide((index) => (index + 1) % slides.length);
+    },
+    delay: 6_000,
+    pauseOnHover: false,
+    pauseOnFocus: 'keyboard',
+  });
+  const resetAutoplay = autoplay.reset;
+  const change = useCallback(
+    (delta: number) => {
+      resetAutoplay();
+      setManualSlide(true);
+      setSlide((index) => (index + delta + slides.length) % slides.length);
+    },
+    [resetAutoplay],
+  );
+
+  const clearGesture = useCallback(() => {
+    const current = gesture.current;
+    gesture.current = null;
+    setIsDragging(false);
+    const visual = autoplay.ref.current;
+    visual?.style.removeProperty('--hero-drag-x');
+    if (current && visual?.hasPointerCapture?.(current.pointerId)) {
+      visual.releasePointerCapture(current.pointerId);
+    }
+  }, [autoplay.ref]);
+
+  const finishGesture = useCallback(
+    (event: { pointerId: number; clientX: number }, commit = true) => {
+      const current = gesture.current;
+      if (!current || current.pointerId !== event.pointerId) return;
+      const delta = event.clientX - current.startX;
+      if (commit && current.horizontal && Math.abs(delta) >= current.threshold) {
+        change(delta < 0 ? 1 : -1);
+      }
+      clearGesture();
+    },
+    [change, clearGesture],
+  );
+
+  useEffect(() => {
+    const cancel = (event: globalThis.PointerEvent) => finishGesture(event, false);
+    const visibility = () => {
+      if (document.visibilityState === 'hidden') clearGesture();
+    };
+    // Complete a mouse release outside the photo even if pointer capture was lost.
+    window.addEventListener('pointerup', finishGesture);
+    window.addEventListener('pointercancel', cancel);
+    window.addEventListener('blur', clearGesture);
+    document.addEventListener('visibilitychange', visibility);
+    return () => {
+      window.removeEventListener('pointerup', finishGesture);
+      window.removeEventListener('pointercancel', cancel);
+      window.removeEventListener('blur', clearGesture);
+      document.removeEventListener('visibilitychange', visibility);
+    };
+  }, [clearGesture, finishGesture]);
+
+  function startGesture(event: PointerEvent<HTMLDivElement>) {
+    suppressPointerClick.current = false;
+    if (!event.isPrimary || event.button !== 0) return;
+    // Arrow and pause buttons retain ordinary click and keyboard behaviour.
+    if (
+      event.target instanceof Element &&
+      event.target.closest('button, a, input, textarea, select')
+    )
+      return;
+    gesture.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      threshold: Math.max(40, Math.min(90, event.currentTarget.clientWidth * 0.1)),
+      horizontal: false,
+      vertical: false,
+    };
+  }
+
+  function moveGesture(event: PointerEvent<HTMLDivElement>) {
+    const current = gesture.current;
+    if (!current || current.pointerId !== event.pointerId || current.vertical) return;
+    if (event.pointerType === 'mouse' && event.buttons !== 1) {
+      clearGesture();
+      return;
+    }
+    const deltaX = event.clientX - current.startX;
+    const deltaY = event.clientY - current.startY;
+    if (!current.horizontal) {
+      if (Math.abs(deltaY) >= 8 && Math.abs(deltaY) >= Math.abs(deltaX)) {
+        current.vertical = true;
+        return;
+      }
+      if (Math.abs(deltaX) < 8 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.2) return;
+      current.horizontal = true;
+      suppressPointerClick.current = true;
+      event.currentTarget.setPointerCapture?.(event.pointerId);
+      setIsDragging(true);
+    }
+    event.preventDefault();
+    event.currentTarget.style.setProperty(
+      '--hero-drag-x',
+      `${Math.max(-64, Math.min(64, deltaX * 0.3))}px`,
+    );
+  }
+
+  function preventDraggedClick(event: MouseEvent<HTMLDivElement>) {
+    if (suppressPointerClick.current && event.detail !== 0) {
+      suppressPointerClick.current = false;
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }
   return (
-    <section className={s.hero}>
+    <section ref={heroRef} className={s.hero} data-motion-active={motionActive}>
       <Container>
         <div className={s.grid}>
           <div className={s.copy}>
@@ -87,14 +222,29 @@ export function Hero() {
             </div>
           </div>
           <div
+            ref={autoplay.ref}
+            {...autoplay.interactionProps}
             className={s.visual}
+            data-playing={autoplay.isPlaying}
+            data-dragging={isDragging || undefined}
+            onPointerDown={startGesture}
+            onPointerMove={moveGesture}
+            onPointerUp={(event) => finishGesture(event)}
+            onPointerCancel={(event) => finishGesture(event, false)}
+            onLostPointerCapture={(event) => {
+              // Touch initially captures on the image. Its bubbling loss while capture
+              // transfers to the carousel is not a cancellation of the carousel gesture.
+              if (event.target === event.currentTarget) finishGesture(event, false);
+            }}
+            onClickCapture={preventDraggedClick}
+            onDragStart={(event) => event.preventDefault()}
             role="region"
             aria-roledescription="карусель"
             aria-label="Готовые подарочные наборы"
           >
             <img
               key={selected.image}
-              src={'/images/' + selected.image + '.webp'}
+              sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 950px) 92vw, (max-width: 1435px) 44vw, 634px"
               srcSet={
                 '/images/' +
                 selected.image +
@@ -102,14 +252,27 @@ export function Hero() {
                 selected.image +
                 '.webp 1536w'
               }
-              sizes="(max-width: 950px) 100vw, 52vw"
+              src={'/images/' + selected.image + '.webp'}
               alt={selected.alt}
               width="1536"
               height="1024"
+              draggable={false}
               fetchPriority={slide === 0 ? 'high' : 'auto'}
             />
+            <div className={s.photoAccents} aria-hidden="true">
+              <span className={s.floatingHeart}>
+                <Icon name="heart" size={34} />
+              </span>
+              <Icon name="sparkles" size={24} className={s.floatingSparkle} />
+            </div>
+            <IconButton
+              className={s.autoplay}
+              name={autoplay.enabled ? 'pause' : 'play'}
+              label={autoplay.enabled ? 'Приостановить смену фото' : 'Включить смену фото'}
+              onClick={autoplay.toggle}
+            />
             <div className={s.slideCaption}>
-              <span aria-live="polite">
+              <span aria-live={manualSlide ? 'polite' : 'off'}>
                 <small>
                   Идея оформления · {slide + 1} / {slides.length}
                 </small>
