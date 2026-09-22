@@ -12,12 +12,20 @@
   overflow: hidden;
   aspect-ratio: 1.2;
   background: #fff;
+  padding: 10px;
 }
 .imageWrap img {
   display: block;
-  width: 100%;
+  width: auto;
   height: 100%;
+  max-width: 100%;
+  margin-inline: auto;
   object-fit: contain;
+  /* Fade the photographed background at its own edges, keeping the box sharp. */
+  mask-image:
+    linear-gradient(to right, transparent, #000 1%, #000 97%, transparent),
+    linear-gradient(to bottom, transparent, #000 1%, #000 98%, transparent);
+  mask-composite: intersect;
   transition: transform var(--transition-base);
 }
 .card:hover .imageWrap img {

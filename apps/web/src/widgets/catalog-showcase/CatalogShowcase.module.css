@@ -82,11 +82,20 @@
   max-height: 280px;
   overflow: hidden;
   background: #fff;
+  padding: 10px;
 }
 .image img {
-  width: 100%;
+  display: block;
+  width: auto;
   height: 100%;
+  max-width: 100%;
+  margin-inline: auto;
   object-fit: contain;
+  /* Fade the photographed background at its own edges, keeping the box sharp. */
+  mask-image:
+    linear-gradient(to right, transparent, #000 1%, #000 97%, transparent),
+    linear-gradient(to bottom, transparent, #000 1%, #000 98%, transparent);
+  mask-composite: intersect;
   transition: transform var(--transition-base);
 }
 .product:hover .image img {
