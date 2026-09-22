@@ -64,7 +64,7 @@ const fontPreloads = (await readdir('dist/assets'))
   .join('');
 // Match Hero.tsx sizes so the browser reuses this request, including mobile DPR 2.
 const heroPreload =
-  '<link rel="preload" as="image" href="/images/hero-team-v5-20260922.webp" imagesrcset="/images/hero-team-v5-20260922-768.webp 768w, /images/hero-team-v5-20260922.webp 1440w" imagesizes="(max-width: 500px) calc(100vw - 40px), (max-width: 950px) 92vw, (max-width: 1435px) 44vw, 634px" fetchpriority="high"/>';
+  '<link rel="preload" as="image" href="/images/hero-team-people-20260922.webp" imagesrcset="/images/hero-team-people-20260922-768.webp 768w, /images/hero-team-people-20260922.webp 1440w" imagesizes="(max-width: 500px) calc(100vw - 40px), (max-width: 950px) 92vw, (max-width: 1435px) 44vw, 634px" fetchpriority="high"/>';
 for (const [path, pageTitle, description] of routes) {
   const title = pageTitle.includes('Сладкий Дар') ? pageTitle : pageTitle + ' — Сладкий Дар';
   const canonical = new URL(path, origin).href;
@@ -78,7 +78,7 @@ for (const [path, pageTitle, description] of routes) {
     '"/><meta data-rh="true" property="og:url" content="' +
     escape(canonical) +
     '"/><meta data-rh="true" property="og:image" content="' +
-    escape(new URL('/images/hero-team-v5-20260922.webp', origin).href) +
+    escape(new URL('/images/hero-team-people-20260922.webp', origin).href) +
     '"/><meta data-rh="true" name="twitter:card" content="summary_large_image"/>';
   const html = template
     .replace(/<title>.*?<\/title>/, '<title>' + escape(title) + '</title>')
