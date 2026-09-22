@@ -50,8 +50,8 @@
   object-fit: cover;
   transition: transform var(--transition-base);
 }
-.image[data-wide='true'] img {
-  object-fit: contain;
+.image[data-custom='true'] img {
+  object-position: 40% 50%;
 }
 .card:hover .image img {
   transform: scale(1.04);

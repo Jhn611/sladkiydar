@@ -127,7 +127,7 @@
   width: 100%;
   height: auto;
   aspect-ratio: 4 / 3;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 .slideCaption {
@@ -309,13 +309,7 @@
 }
 
 .visual > img {
-  animation:
-    photo-appear 650ms ease-out both,
-    photo-drift 6s ease-out both;
-  animation-play-state: running, paused;
-}
-.visual[data-playing='true'] > img {
-  animation-play-state: running, running;
+  animation: photo-appear 650ms ease-out both;
 }
 .visual > .autoplay {
   position: absolute;
@@ -338,16 +332,7 @@
     opacity: 1;
   }
 }
-@keyframes photo-drift {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.04);
-  }
-}
-
-/* Follow the finger without interfering with the photo's gentle zoom. */
+/* Follow the finger while preserving the complete photo at rest. */
 .visual {
   touch-action: pan-y pinch-zoom;
   user-select: none;

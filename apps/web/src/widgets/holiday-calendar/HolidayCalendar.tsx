@@ -24,10 +24,7 @@ export function HolidayCalendar() {
         <div className={s.grid}>
           {occasions.map((occasion) => (
             <article key={occasion.id} className={s.card}>
-              <div
-                className={s.image}
-                data-wide={occasion.imageWidth / occasion.imageHeight > 1.6 || undefined}
-              >
+              <div className={s.image} data-custom={occasion.id === 'custom' || undefined}>
                 <img
                   sizes="(max-width: 520px) 100vw, (max-width: 1100px) 50vw, 33vw"
                   srcSet={`/images/${occasion.image}-768.webp 768w, /images/${occasion.image}.webp ${occasion.imageWidth}w`}
