@@ -149,7 +149,7 @@
   }
   .visual {
     min-height: 0;
-    aspect-ratio: 1.5;
+    aspect-ratio: 4 / 3;
   }
   .visual figcaption {
     font-size: 0.75rem;

@@ -57,13 +57,13 @@ describe('showcase navigation', () => {
     const gallery = screen.getByRole('region', { name: 'Примеры подарочных наборов' });
     expect(within(gallery).getByRole('button', { name: 'Предыдущий набор' })).toBeDisabled();
     await user.click(within(gallery).getByRole('button', { name: 'Следующий набор' }));
-    expect(screen.getByRole('heading', { name: 'Спасибо, команда!' })).toBeVisible();
-    expect(screen.getByText('Около 10 изделий в наборе')).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Новогоднее чудо' })).toBeVisible();
+    expect(screen.getByText('Около 17 изделий в наборе')).toBeVisible();
     await user.click(screen.getByRole('button', { name: 'Узнать цену этого набора' }));
-    expect(openLeadModal).toHaveBeenLastCalledWith('showcase-product:team-thanks');
+    expect(openLeadModal).toHaveBeenLastCalledWith('showcase-product:new-year-magic');
 
     const second = screen.getByRole('button', {
-      name: 'Посмотреть состав набора «Спасибо, команда!»',
+      name: 'Посмотреть состав набора «Новогоднее чудо»',
     });
     act(() => second.focus());
     await user.keyboard('{End}');
@@ -81,7 +81,7 @@ describe('showcase navigation', () => {
     const track = screen.getByRole('list', { name: 'Выберите набор' });
     const { capture, release } = mockCapture(track);
     const second = screen.getByRole('button', {
-      name: 'Посмотреть состав набора «Спасибо, команда!»',
+      name: 'Посмотреть состав набора «Новогоднее чудо»',
     });
     pointer(second, 'pointerdown');
     pointer(track, 'pointermove', { clientX: 296 });
@@ -95,7 +95,7 @@ describe('showcase navigation', () => {
     expect(track).toHaveAttribute('data-dragging', 'true');
     pointer(track, 'pointerup', { clientX: 170 });
     fireEvent.click(second, { detail: 1 });
-    expect(screen.getByRole('heading', { name: 'Маленькая радость' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Спасибо, команда!' })).toBeVisible();
     expect(second).toHaveAttribute('aria-pressed', 'false');
     expect(release).toHaveBeenCalledWith(1);
     expect(track).not.toHaveAttribute('data-dragging');
@@ -103,7 +103,7 @@ describe('showcase navigation', () => {
     pointer(second, 'pointerdown', { clientX: 170 });
     pointer(second, 'pointerup', { clientX: 173 });
     fireEvent.click(second, { detail: 1 });
-    expect(screen.getByRole('heading', { name: 'Спасибо, команда!' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Новогоднее чудо' })).toBeVisible();
   });
 
   it.each(['pointercancel', 'lostpointercapture'])(
@@ -113,7 +113,7 @@ describe('showcase navigation', () => {
       const track = screen.getByRole('list', { name: 'Выберите набор' });
       mockCapture(track);
       const second = screen.getByRole('button', {
-        name: 'Посмотреть состав набора «Спасибо, команда!»',
+        name: 'Посмотреть состав набора «Новогоднее чудо»',
       });
       pointer(second, 'pointerdown');
       pointer(track, 'pointermove', { clientX: 150 });
@@ -123,9 +123,9 @@ describe('showcase navigation', () => {
       // Keyboard-generated clicks have detail=0 and must not be suppressed by a prior drag.
       act(() => second.focus());
       await user.keyboard('{Enter}');
-      expect(screen.getByRole('heading', { name: 'Спасибо, команда!' })).toBeVisible();
+      expect(screen.getByRole('heading', { name: 'Новогоднее чудо' })).toBeVisible();
       await user.click(screen.getByRole('button', { name: 'Узнать цену этого набора' }));
-      expect(openLeadModal).toHaveBeenLastCalledWith('showcase-product:team-thanks');
+      expect(openLeadModal).toHaveBeenLastCalledWith('showcase-product:new-year-magic');
     },
   );
 
@@ -153,12 +153,12 @@ describe('showcase navigation', () => {
     const scrollTo = vi.fn();
     Object.assign(track, { scrollTo });
     act(() =>
-      screen.getByRole('button', { name: 'Посмотреть состав набора «Маленькая радость»' }).focus(),
+      screen.getByRole('button', { name: 'Посмотреть состав набора «Спасибо, команда!»' }).focus(),
     );
     await user.keyboard('{ArrowRight}');
     expect(scrollTo).toHaveBeenLastCalledWith(expect.objectContaining({ behavior: 'smooth' }));
     expect(
-      screen.getByRole('button', { name: 'Посмотреть состав набора «Спасибо, команда!»' }),
+      screen.getByRole('button', { name: 'Посмотреть состав набора «Новогоднее чудо»' }),
     ).toHaveFocus();
   });
 });
@@ -170,13 +170,13 @@ it('automatically changes the selected composition and loops without vertical sc
   const scrollTo = vi.fn();
   Object.assign(track, { scrollTo });
   act(() => vi.advanceTimersByTime(7_000));
-  expect(screen.getByRole('heading', { name: 'Спасибо, команда!' })).toBeVisible();
-  expect(screen.getByText('Около 10 изделий в наборе')).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Новогоднее чудо' })).toBeVisible();
+  expect(screen.getByText('Около 17 изделий в наборе')).toBeVisible();
   expect(document.getElementById('showcase-details')).toHaveAttribute('aria-live', 'off');
   expect(scrollTo).toHaveBeenLastCalledWith({ left: -6, behavior: 'smooth' });
   expect(window.scrollY).toBe(0);
   for (let i = 1; i < products.length; i++) act(() => vi.advanceTimersByTime(7_000));
-  expect(screen.getByRole('heading', { name: 'Маленькая радость' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Спасибо, команда!' })).toBeVisible();
 });
 
 it('keeps the selected product stable while its price request has focus', () => {
@@ -185,9 +185,9 @@ it('keeps the selected product stable while its price request has focus', () => 
   const request = screen.getByRole('button', { name: 'Узнать цену этого набора' });
   act(() => request.focus());
   act(() => vi.advanceTimersByTime(21_000));
-  expect(screen.getByRole('heading', { name: 'Маленькая радость' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Спасибо, команда!' })).toBeVisible();
   expect(document.getElementById('showcase-details')).toHaveAttribute('aria-live', 'polite');
   act(() => request.blur());
   act(() => vi.advanceTimersByTime(7_000));
-  expect(screen.getByRole('heading', { name: 'Спасибо, команда!' })).toBeVisible();
+  expect(screen.getByRole('heading', { name: 'Новогоднее чудо' })).toBeVisible();
 });

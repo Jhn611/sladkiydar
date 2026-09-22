@@ -81,8 +81,8 @@ export default function AgreementPage() {
               </p>
               <p>
                 Телефон: <a href={site.phoneHref}>{site.phone}</a>. E-mail:{' '}
-                <a href={`mailto:${site.email}`}>{site.email}</a>. Контактные данные, адрес и
-                цифровые реквизиты временные и используются для макета.
+                <a href={`mailto:${site.email}`}>{site.email}</a>. E-mail, адрес и цифровые
+                реквизиты временные и используются для макета.
               </p>
             </section>
           </div>

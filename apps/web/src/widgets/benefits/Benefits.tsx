@@ -54,12 +54,12 @@ export function Benefits() {
           </div>
           <figure className={s.visual}>
             <img
-              src="/images/eco-gifts.webp"
-              srcSet="/images/eco-gifts-768.webp 768w, /images/eco-gifts.webp 1536w"
               sizes="(max-width: 767px) calc(100vw - clamp(2.5rem, 8vw, 8rem)), (max-width: 1000px) 40vw, (max-width: 1440px) 42vw, 590px"
-              alt="Идея оформления подарочного набора в коробке в форме сердца, без фирменных обозначений на изображении"
-              width="1536"
-              height="1024"
+              srcSet="/images/benefits-set-20260922-768.webp 768w, /images/benefits-set-20260922.webp 1440w"
+              src="/images/benefits-set-20260922.webp"
+              alt="Подарочный набор с Kinder Surprise, шоколадом, батончиками и розовым наполнителем"
+              width="1440"
+              height="1080"
               loading="lazy"
               decoding="async"
             />

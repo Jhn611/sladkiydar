@@ -202,13 +202,14 @@ export function CatalogShowcase() {
                   >
                     <span className={s.image}>
                       <img
-                        src={product.image}
-                        srcSet={`${product.image.replace('.webp', '-768.webp')} 768w, ${product.image} 1536w`}
                         sizes="(max-width: 600px) 80vw, (max-width: 1000px) 48vw, 32vw"
+                        srcSet={`${product.image.replace('.webp', '-768.webp')} 768w, ${product.image} ${product.imageWidth}w`}
+                        src={product.image}
                         alt={product.imageAlt}
-                        width={1536}
-                        height={1024}
+                        width={product.imageWidth}
+                        height={product.imageHeight}
                         loading="lazy"
+                        decoding="async"
                         draggable={false}
                       />
                       <span className={s.badge}>{product.occasions[0]}</span>

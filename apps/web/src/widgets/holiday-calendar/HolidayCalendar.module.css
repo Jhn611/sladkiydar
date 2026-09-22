@@ -40,7 +40,7 @@
 }
 .image {
   position: relative;
-  aspect-ratio: 1.24;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: #f7e3d7;
 }
@@ -49,6 +49,9 @@
   height: 100%;
   object-fit: cover;
   transition: transform var(--transition-base);
+}
+.image[data-wide='true'] img {
+  object-fit: contain;
 }
 .card:hover .image img {
   transform: scale(1.04);
@@ -143,7 +146,7 @@
     grid-column: auto;
   }
   .image {
-    aspect-ratio: 1.65;
+    aspect-ratio: 4 / 3;
   }
   .content {
     padding: 1.35rem;

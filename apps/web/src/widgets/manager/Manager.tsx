@@ -13,14 +13,15 @@ export function Manager() {
         <div className={s.layout}>
           <figure>
             <img
-              src="/images/manager.webp"
-              alt="Иллюстрация менеджера — временный образ"
-              width="900"
-              height="1200"
+              sizes="(max-width: 760px) 310px, 400px"
+              srcSet="/images/manager-portrait-20260922-768.webp 768w, /images/manager-portrait-20260922.webp 1000w"
+              src="/images/manager-portrait-20260922.webp"
+              alt="Ваш персональный менеджер в офисе"
+              width="1000"
+              height="938"
               loading="lazy"
               decoding="async"
             />
-            <figcaption>Заменить на реальное фото и имя менеджера перед публикацией.</figcaption>
           </figure>
           <div className={s.copy}>
             <span className="eyebrow">Человек, который поможет с выбором</span>

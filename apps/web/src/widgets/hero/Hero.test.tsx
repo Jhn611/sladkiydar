@@ -22,17 +22,16 @@ describe('hero autoplay', () => {
     vi.useFakeTimers();
     const hero = mount();
     act(() => vi.advanceTimersByTime(6_000));
-    expect(within(hero).getByText('Спасибо от всего сердца')).toBeVisible();
-    act(() => vi.advanceTimersByTime(6_000));
-    expect(within(hero).getByText('Немного новогоднего чуда')).toBeVisible();
+    expect(within(hero).getByText('Радость для самых любимых')).toBeVisible();
     act(() => vi.advanceTimersByTime(6_000));
     expect(within(hero).getByText('Большой повод для радости')).toBeVisible();
+    expect(within(hero).getByText('Идея оформления · 1 / 2')).toBeVisible();
     fireEvent.click(within(hero).getByRole('button', { name: 'Приостановить смену фото' }));
     act(() => vi.advanceTimersByTime(18_000));
     expect(within(hero).getByText('Большой повод для радости')).toBeVisible();
     expect(within(hero).getByRole('button', { name: 'Включить смену фото' })).toBeVisible();
     fireEvent.click(within(hero).getByRole('button', { name: 'Следующий набор' }));
-    expect(within(hero).getByText('Спасибо от всего сердца')).toBeVisible();
+    expect(within(hero).getByText('Радость для самых любимых')).toBeVisible();
   });
 
   it('keeps autoplay enabled with a system reduced-motion preference and supports manual pause', () => {
@@ -43,12 +42,12 @@ describe('hero autoplay', () => {
     );
     const hero = mount();
     act(() => vi.advanceTimersByTime(6_000));
-    expect(within(hero).getByText('Спасибо от всего сердца')).toBeVisible();
+    expect(within(hero).getByText('Радость для самых любимых')).toBeVisible();
     fireEvent.click(within(hero).getByRole('button', { name: 'Приостановить смену фото' }));
     act(() => vi.advanceTimersByTime(18_000));
-    expect(within(hero).getByText('Спасибо от всего сердца')).toBeVisible();
+    expect(within(hero).getByText('Радость для самых любимых')).toBeVisible();
     fireEvent.click(within(hero).getByRole('button', { name: 'Следующий набор' }));
-    expect(within(hero).getByText('Немного новогоднего чуда')).toBeVisible();
+    expect(within(hero).getByText('Большой повод для радости')).toBeVisible();
   });
 });
 
@@ -96,7 +95,7 @@ describe('hero photo gestures', () => {
       expect(hero).toHaveAttribute('data-dragging', 'true');
       expect(hero.style.getPropertyValue('--hero-drag-x')).toBe('-39px');
       pointer(hero, 'pointerup', { pointerType, clientX: 170 });
-      expect(within(hero).getByText('Спасибо от всего сердца')).toBeVisible();
+      expect(within(hero).getByText('Радость для самых любимых')).toBeVisible();
       expect(release).toHaveBeenCalledOnce();
       expect(hero).not.toHaveAttribute('data-dragging');
       expect(hero.style.getPropertyValue('--hero-drag-x')).toBe('');
@@ -153,13 +152,13 @@ describe('hero photo gestures', () => {
     pointer(window, 'pointerup', { clientX: 100 });
     const next = within(hero).getByRole('button', { name: 'Следующий набор' });
     fireEvent.click(next, { detail: 1 });
-    expect(within(hero).getByText('Спасибо от всего сердца')).toBeVisible();
+    expect(within(hero).getByText('Радость для самых любимых')).toBeVisible();
     pointer(next, 'pointerdown');
     pointer(hero, 'pointermove', { clientX: 100 });
     pointer(next, 'pointerup', { clientX: 100 });
     expect(hero).not.toHaveAttribute('data-dragging');
     fireEvent.click(next, { detail: 1 });
-    expect(within(hero).getByText('Немного новогоднего чуда')).toBeVisible();
+    expect(within(hero).getByText('Большой повод для радости')).toBeVisible();
   });
 
   it('pauses autoplay during a touch swipe and starts a new interval after release', () => {
@@ -170,16 +169,16 @@ describe('hero photo gestures', () => {
     act(() => vi.advanceTimersByTime(12_000));
     expect(within(hero).getByText('Большой повод для радости')).toBeVisible();
     pointer(hero, 'pointerup', { pointerType: 'touch', clientX: 100 });
-    expect(within(hero).getByText('Спасибо от всего сердца')).toBeVisible();
-    expect(within(hero).getByText('Спасибо от всего сердца').parentElement).toHaveAttribute(
+    expect(within(hero).getByText('Радость для самых любимых')).toBeVisible();
+    expect(within(hero).getByText('Радость для самых любимых').parentElement).toHaveAttribute(
       'aria-live',
       'polite',
     );
     act(() => vi.advanceTimersByTime(5_999));
-    expect(within(hero).getByText('Спасибо от всего сердца')).toBeVisible();
+    expect(within(hero).getByText('Радость для самых любимых')).toBeVisible();
     act(() => vi.advanceTimersByTime(1));
-    expect(within(hero).getByText('Немного новогоднего чуда')).toBeVisible();
-    expect(within(hero).getByText('Немного новогоднего чуда').parentElement).toHaveAttribute(
+    expect(within(hero).getByText('Большой повод для радости')).toBeVisible();
+    expect(within(hero).getByText('Большой повод для радости').parentElement).toHaveAttribute(
       'aria-live',
       'off',
     );
@@ -194,9 +193,9 @@ describe('hero photo gestures', () => {
     pointer(within(hero).getByRole('img'), 'pointerdown', { pointerType: 'touch' });
     pointer(hero, 'pointermove', { pointerType: 'touch', clientX: 100 });
     pointer(hero, 'pointerup', { pointerType: 'touch', clientX: 100 });
-    expect(within(hero).getByText('Спасибо от всего сердца')).toBeVisible();
+    expect(within(hero).getByText('Радость для самых любимых')).toBeVisible();
     fireEvent.click(within(hero).getByRole('button', { name: 'Следующий набор' }), { detail: 0 });
-    expect(within(hero).getByText('Немного новогоднего чуда')).toBeVisible();
+    expect(within(hero).getByText('Большой повод для радости')).toBeVisible();
   });
 });
 
@@ -212,7 +211,7 @@ it('continues a touch swipe when implicit capture transfers from the image to th
   expect(hero).toHaveAttribute('data-dragging', 'true');
   pointer(hero, 'pointermove', { pointerType: 'touch', clientX: 100 });
   pointer(hero, 'pointerup', { pointerType: 'touch', clientX: 100 });
-  expect(within(hero).getByText('Спасибо от всего сердца')).toBeVisible();
+  expect(within(hero).getByText('Радость для самых любимых')).toBeVisible();
   expect(hero).not.toHaveAttribute('data-dragging');
 });
 
@@ -221,17 +220,17 @@ it('autoplays under a resting mouse and after clicking an arrow that keeps focus
   const hero = mount();
   pointer(hero, 'pointerover');
   act(() => vi.advanceTimersByTime(6_000));
-  expect(within(hero).getByText('Спасибо от всего сердца')).toBeVisible();
+  expect(within(hero).getByText('Радость для самых любимых')).toBeVisible();
   const next = within(hero).getByRole('button', { name: 'Следующий набор' });
   pointer(next, 'pointerdown');
   act(() => next.focus());
   pointer(next, 'pointerup');
   fireEvent.click(next, { detail: 1 });
-  expect(within(hero).getByText('Немного новогоднего чуда')).toBeVisible();
-  act(() => vi.advanceTimersByTime(5_999));
-  expect(within(hero).getByText('Немного новогоднего чуда')).toBeVisible();
-  act(() => vi.advanceTimersByTime(1));
   expect(within(hero).getByText('Большой повод для радости')).toBeVisible();
+  act(() => vi.advanceTimersByTime(5_999));
+  expect(within(hero).getByText('Большой повод для радости')).toBeVisible();
+  act(() => vi.advanceTimersByTime(1));
+  expect(within(hero).getByText('Радость для самых любимых')).toBeVisible();
   expect(next).toHaveFocus();
 });
 
@@ -251,14 +250,14 @@ it('resumes after clicking play while keeping keyboard focus pause available', (
   expect(within(hero).getByText('Большой повод для радости')).toBeVisible();
   const toggle = clickToggle('Включить смену фото');
   act(() => vi.advanceTimersByTime(6_000));
-  expect(within(hero).getByText('Спасибо от всего сердца')).toBeVisible();
+  expect(within(hero).getByText('Радость для самых любимых')).toBeVisible();
   expect(toggle).toHaveFocus();
   fireEvent.keyDown(toggle, { key: 'Tab' });
   const next = within(hero).getByRole('button', { name: 'Следующий набор' });
   act(() => next.focus());
   act(() => vi.advanceTimersByTime(12_000));
-  expect(within(hero).getByText('Спасибо от всего сердца')).toBeVisible();
+  expect(within(hero).getByText('Радость для самых любимых')).toBeVisible();
   act(() => next.blur());
   act(() => vi.advanceTimersByTime(6_000));
-  expect(within(hero).getByText('Немного новогоднего чуда')).toBeVisible();
+  expect(within(hero).getByText('Большой повод для радости')).toBeVisible();
 });

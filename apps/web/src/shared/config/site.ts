@@ -2,8 +2,8 @@
 export const site = {
   name: 'Сладкий Дар',
   operator: 'ИП Гуледани Гурам Шалвович',
-  phone: '+7 (999) 888-77-66',
-  phoneHref: 'tel:+79998887766',
+  phone: '+7 (929) 629-29-44',
+  phoneHref: 'tel:+79296292944',
   email: 'info@sladkiy-dar.example',
   workingHours: '09:00–18:00 · пн–пт · МСК',
   inn: '000000000000',

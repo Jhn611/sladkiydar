@@ -24,10 +24,12 @@ export function Capabilities() {
         <div className={s.grid}>
           <article>
             <img
-              src="/images/box-sizes.webp"
-              alt="Пять размеров картонных подарочных коробок — иллюстрация"
+              sizes="(max-width: 540px) 92vw, (max-width: 850px) 44vw, 30vw"
+              srcSet="/images/custom-boxes-20260922-768.webp 768w, /images/custom-boxes-20260922.webp 1200w"
+              src="/images/custom-boxes-20260922.webp"
+              alt="Белые подарочные коробки разных размеров с розовыми лентами"
               width="1200"
-              height="800"
+              height="675"
               loading="lazy"
               decoding="async"
             />
@@ -56,14 +58,16 @@ export function Capabilities() {
             </div>
           </article>
           <article className={s.extras}>
-            <div className={s.extraArt} aria-hidden="true">
-              <Icon name="mug" size={60} />
-              <span>
-                Для вас
-                <Icon name="heart" size={32} />
-              </span>
-              <Icon name="gift" size={60} />
-            </div>
+            <img
+              sizes="(max-width: 540px) 92vw, (max-width: 850px) 44vw, 30vw"
+              srcSet="/images/custom-details-20260922-768.webp 768w, /images/custom-details-20260922.webp 1200w"
+              src="/images/custom-details-20260922.webp"
+              alt="Кружки с принтами, открытки и ленты для индивидуального оформления подарков"
+              width="1200"
+              height="675"
+              loading="lazy"
+              decoding="async"
+            />
             <div>
               <span>03 / Особенные детали</span>
               <h3>Маленькое, но личное</h3>

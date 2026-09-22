@@ -92,14 +92,14 @@ test('catalog combines audience and occasion filters and opens the common reques
   await expectCurrentLeadFields(dialog);
   await page.keyboard.press('Escape');
   await page.getByLabel('Повод', { exact: true }).selectOption('Корпоратив');
-  await expect(page.getByRole('heading', { name: 'Маленькая радость' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Спасибо, команда!' })).toBeVisible();
   await expect(page.locator('main').getByRole('article')).toHaveCount(1);
   await page.getByLabel('Повод', { exact: true }).selectOption('Для перепродажи');
   await expect(
     page.getByRole('heading', { name: 'Для вашего повода — особый набор' }),
   ).toBeVisible();
   await page.getByRole('button', { name: 'Показать все наборы' }).click();
-  await expect(page.locator('main').getByRole('article')).toHaveCount(6);
+  await expect(page.locator('main').getByRole('article')).toHaveCount(4);
 });
 
 test('modal focus, keyboard trap, escape and restoration', async ({ page }) => {
@@ -268,9 +268,9 @@ test('showcase mouse drag scrolls without selecting a card and the next click st
   await page.goto('/');
   const carousel = page.getByRole('region', { name: 'Примеры подарочных наборов' });
   const track = carousel.getByRole('list', { name: 'Выберите набор', exact: true });
-  const first = track.getByRole('button', { name: 'Посмотреть состав набора «Маленькая радость»' });
+  const first = track.getByRole('button', { name: 'Посмотреть состав набора «Спасибо, команда!»' });
   const second = track.getByRole('button', {
-    name: 'Посмотреть состав набора «Спасибо, команда!»',
+    name: 'Посмотреть состав набора «Новогоднее чудо»',
   });
   await track.scrollIntoViewIfNeeded();
   await expect(first).toHaveAttribute('aria-pressed', 'true');
@@ -290,7 +290,7 @@ test('showcase mouse drag scrolls without selecting a card and the next click st
   await expect(first).toHaveAttribute('aria-pressed', 'true');
   await expect(second).toHaveAttribute('aria-pressed', 'false');
   await expect(
-    page.locator('#showcase-details').getByRole('heading', { name: 'Маленькая радость' }),
+    page.locator('#showcase-details').getByRole('heading', { name: 'Спасибо, команда!' }),
   ).toBeVisible();
   await expect(page.getByRole('dialog')).toHaveCount(0);
 
@@ -298,7 +298,7 @@ test('showcase mouse drag scrolls without selecting a card and the next click st
   await expect(second).toHaveAttribute('aria-pressed', 'true');
   await expect(first).toHaveAttribute('aria-pressed', 'false');
   await expect(
-    page.locator('#showcase-details').getByRole('heading', { name: 'Спасибо, команда!' }),
+    page.locator('#showcase-details').getByRole('heading', { name: 'Новогоднее чудо' }),
   ).toBeVisible();
 });
 
@@ -317,7 +317,7 @@ test('showcase changes composition with the keyboard and requests the selected s
   await page.goto('/');
   const carousel = page.getByRole('region', { name: 'Примеры подарочных наборов' });
   const first = carousel.getByRole('button', {
-    name: 'Посмотреть состав набора «Маленькая радость»',
+    name: 'Посмотреть состав набора «Спасибо, команда!»',
   });
   await first.click();
   await first.press('End');
@@ -326,7 +326,7 @@ test('showcase changes composition with the keyboard and requests the selected s
   await expect(last).toBeFocused();
   const details = page.locator('#showcase-details');
   await expect(details.getByRole('heading', { name: 'Большой повод' })).toBeVisible();
-  await expect(details.getByText('Около 14 изделий в наборе')).toBeVisible();
+  await expect(details.getByText('Около 18 изделий в наборе')).toBeVisible();
   await details.getByRole('button', { name: 'Узнать цену этого набора', exact: true }).click();
   const dialog = page.getByRole('dialog', { name: modalTitle });
   await dialog.getByLabel('Имя *', { exact: true }).fill('Мария');

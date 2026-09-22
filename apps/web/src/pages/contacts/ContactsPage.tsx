@@ -87,8 +87,8 @@ export default function ContactsPage() {
                 </dl>
                 {site.isDemoContacts && (
                   <p className={styles.placeholder}>
-                    Телефон, e-mail, ИНН, ОГРНИП и адрес временные, для макета. Перед публикацией
-                    заменим их на действующие.
+                    E-mail, ИНН, ОГРНИП и адрес временные, для макета. Перед публикацией заменим их
+                    на действующие.
                   </p>
                 )}
               </div>

@@ -56,14 +56,16 @@ export function Warehouse() {
         <div className={s.storage}>
           <figure>
             <img
-              src="/images/warehouse.webp"
-              alt="Иллюстрация зоны сборки и хранения подарочных наборов"
-              width="1200"
-              height="800"
+              sizes="(max-width: 800px) 92vw, (max-width: 1440px) 42vw, 600px"
+              srcSet="/images/warehouse-team-20260922-768.webp 768w, /images/warehouse-team-20260922.webp 1440w"
+              src="/images/warehouse-team-20260922.webp"
+              alt="Сборка и упаковка подарочных наборов на складе"
+              width="1440"
+              height="1080"
               loading="lazy"
               decoding="async"
             />
-            <figcaption>Иллюстрация. Фото нашего склада появятся здесь позже.</figcaption>
+            <figcaption>Сборка, проверка комплектации и упаковка подарочных партий.</figcaption>
           </figure>
           <div>
             <span className="eyebrow">От сборки до отгрузки — в одних руках</span>

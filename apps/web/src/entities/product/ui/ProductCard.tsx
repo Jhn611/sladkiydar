@@ -8,13 +8,14 @@ export function ProductCard({ product, onRequest }: { product: Product; onReques
     <article className={styles.card}>
       <div className={styles.imageWrap}>
         <img
-          src={product.image}
-          srcSet={`${product.image.replace('.webp', '-768.webp')} 768w, ${product.image} 1536w`}
           sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw"
+          srcSet={`${product.image.replace('.webp', '-768.webp')} 768w, ${product.image} ${product.imageWidth}w`}
+          src={product.image}
           alt={product.imageAlt}
-          width={1536}
-          height={1024}
+          width={product.imageWidth}
+          height={product.imageHeight}
           loading="lazy"
+          decoding="async"
         />
         <span className={styles.badge}>{product.occasions[0]}</span>
         <span className={styles.concept}>Иллюстрация набора</span>

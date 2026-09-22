@@ -63,7 +63,8 @@
 }
 .storage img {
   width: 100%;
-  aspect-ratio: 1.1;
+  aspect-ratio: 4 / 3;
+  height: auto;
   object-fit: cover;
 }
 .storage figcaption {
@@ -98,7 +99,7 @@
     max-width: 640px;
   }
   .storage img {
-    aspect-ratio: 1.5;
+    aspect-ratio: 4 / 3;
   }
   .season {
     padding: 28px;

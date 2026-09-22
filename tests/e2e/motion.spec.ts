@@ -155,7 +155,7 @@ test('hero automatically changes photos under the mouse and keeps running despit
   await expect(image).not.toHaveAttribute('src', first!);
   await hero.hover();
   const hovered = await image.getAttribute('src');
-  await page.clock.runFor(14_000);
+  await page.clock.runFor(6000);
   await expect(image).not.toHaveAttribute('src', hovered!);
   await page.mouse.move(0, 0);
   const beforeLeaving = await image.getAttribute('src');

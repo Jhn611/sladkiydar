@@ -24,19 +24,14 @@ const audiences = [
 ];
 const slides = [
   {
-    image: 'hero-gifts',
+    image: 'hero-team-20260922',
     title: 'Большой повод для радости',
-    alt: 'Вариант оформления большого подарочного набора в красно-белой гамме',
+    alt: 'Коллеги в офисе с подарочными наборами Kinder в коробке и в форме сердца',
   },
   {
-    image: 'eco-gifts',
-    title: 'Спасибо от всего сердца',
-    alt: 'Вариант набора сладостей в белой коробке в форме сердца',
-  },
-  {
-    image: 'winter-gifts',
-    title: 'Немного новогоднего чуда',
-    alt: 'Вариант праздничной коробки со сладостями и красной лентой',
+    image: 'hero-children-20260922',
+    title: 'Радость для самых любимых',
+    alt: 'Девочка и мальчик с подарочными наборами Kinder',
   },
 ];
 type SwipeGesture = {
@@ -250,12 +245,12 @@ export function Hero() {
                 selected.image +
                 '-768.webp 768w, /images/' +
                 selected.image +
-                '.webp 1536w'
+                '.webp 1440w'
               }
               src={'/images/' + selected.image + '.webp'}
               alt={selected.alt}
-              width="1536"
-              height="1024"
+              width="1440"
+              height="1080"
               draggable={false}
               fetchPriority={slide === 0 ? 'high' : 'auto'}
             />

@@ -46,7 +46,7 @@ export function Footer() {
             ИНН {site.inn} · ОГРНИП {site.ogrnip}
           </span>
           <span>Юридический адрес: {site.address}</span>
-          {site.isDemoContacts && <small>Контакты и реквизиты временные, для макета.</small>}
+          {site.isDemoContacts && <small>E-mail и реквизиты временные, для макета.</small>}
         </div>
         <div className={s.bottom}>
           <span>
@@ -57,8 +57,8 @@ export function Footer() {
         </div>
         <p className={s.legal}>
           Изображения показывают идеи оформления. Фото готовых наборов, точный состав, документы и
-          актуальный прайс предоставит менеджер. Kinder упоминается для описания продукции; графика
-          бренда на сайте не используется.
+          актуальный прайс предоставит менеджер. Kinder упоминается для описания продукции в
+          наборах.
         </p>
       </Container>
     </footer>

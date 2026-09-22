@@ -29,10 +29,11 @@
 }
 .grid img {
   width: 100%;
-  aspect-ratio: 1.5;
+  aspect-ratio: 16 / 9;
+  height: auto;
   object-fit: cover;
 }
-.grid article > div:not(.extraArt) {
+.grid article > div {
   padding: 26px;
 }
 .grid article > div > span {
@@ -50,25 +51,6 @@
   font-size: 0.9rem;
   line-height: 1.8;
   color: var(--color-muted);
-}
-.extraArt {
-  aspect-ratio: 1.5;
-  background: #f9e3d9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 22px;
-  color: var(--color-primary-hover);
-}
-.extraArt > span {
-  display: grid;
-  justify-items: center;
-  gap: 10px;
-  background: #fffaf4;
-  transform: rotate(-10deg);
-  padding: 24px 18px;
-  box-shadow: 0 6px 14px #46201014;
-  border-radius: 4px;
 }
 .bottom {
   margin-top: 32px;
@@ -102,7 +84,7 @@
   .extras {
     display: block;
   }
-  .grid article > div:not(.extraArt) {
+  .grid article > div {
     padding: 22px;
   }
   .bottom button {

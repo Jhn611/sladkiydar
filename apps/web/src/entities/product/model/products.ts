@@ -23,6 +23,8 @@ export interface Product {
   occasions: readonly ProductOccasion[];
   image: string;
   imageAlt: string;
+  imageWidth: number;
+  imageHeight: number;
   label: string;
   contents: readonly { name: string; quantity: number }[];
   packaging: string;
@@ -32,106 +34,93 @@ export function getProductCount(product: Product): number {
   return product.contents.reduce((total, item) => total + item.quantity, 0);
 }
 
-// Illustrative product concepts. Replace with confirmed catalog photos and compositions.
-// Counts describe the proposed composition, not a promise about the illustrated packaging.
+// Examples follow the supplied catalog photos; the final composition is agreed with the client.
+// An individually wrapped item or a sealed retail pack counts as one item.
 export const products: readonly Product[] = [
-  {
-    id: 'little-joy',
-    name: 'Маленькая радость',
-    description: 'Небольшой знак внимания для команды, клиентов и партнёров — в нужном вам объёме.',
-    audiences: ['Компаниям', 'Детским садам и школам', 'Родителям', 'Организаторам'],
-    occasions: ['8 марта / 23 февраля', 'Корпоратив'],
-    image: '/images/eco-gifts.webp',
-    imageAlt: 'Иллюстрация компактной подарочной коробки со сладостями без логотипов',
-    label: 'Для маленьких радостей',
-    contents: [
-      { name: 'Kinder Chocolate, батончик', quantity: 4 },
-      { name: 'Kinder Surprise, шоколадное яйцо', quantity: 1 },
-      { name: 'Kinder Bueno, упаковка', quantity: 1 },
-    ],
-    packaging: 'Небольшая картонная коробка с бумажным наполнителем',
-  },
   {
     id: 'team-thanks',
     name: 'Спасибо, команда!',
-    description: 'Любимые сладости и личная открытка для каждого сотрудника.',
-    audiences: ['Компаниям', 'Организаторам'],
+    description: 'Сладкий подарок с голубым наполнителем для сотрудников, клиентов и партнёров.',
+    audiences: ['Компаниям', 'Детским садам и школам', 'Родителям', 'Организаторам'],
     occasions: ['Корпоратив', '8 марта / 23 февраля'],
-    image: '/images/welcome-gifts.webp',
-    imageAlt: 'Иллюстрация подарочного набора в светлой коробке с красной лентой без логотипов',
+    image: '/images/gallery-blue-20260922.webp',
+    imageAlt:
+      'Набор с Kinder Bueno, Country, шоколадными яйцами и баночками Nutella в голубом наполнителе',
+    imageWidth: 1200,
+    imageHeight: 1215,
     label: 'Вместе — слаще',
     contents: [
-      { name: 'Kinder Chocolate, батончик', quantity: 6 },
       { name: 'Kinder Bueno, упаковка', quantity: 2 },
       { name: 'Kinder Country, батончик', quantity: 2 },
+      { name: 'Kinder Surprise, шоколадное яйцо', quantity: 2 },
+      { name: 'Kinder Chocolate, батончик', quantity: 4 },
+      { name: 'Nutella, баночка', quantity: 2 },
     ],
-    packaging: 'Картонная коробка, наполнитель и открытка с вашим поздравлением',
+    packaging: 'Белая картонная коробка с голубым бумажным наполнителем',
   },
   {
     id: 'new-year-magic',
     name: 'Новогоднее чудо',
-    description: 'Праздничный микс для команды, организаций и больших зимних событий.',
+    description: 'Праздничный микс с Kinder и Raffaello для команды и больших зимних событий.',
     audiences: ['Компаниям', 'Детским садам и школам', 'Родителям', 'Организаторам'],
     occasions: ['Новый год'],
-    image: '/images/winter-gifts.webp',
-    imageAlt: 'Иллюстрация новогодней коробки со сладостями и еловыми ветками без логотипов',
+    image: '/images/gallery-red-20260922.webp',
+    imageAlt:
+      'Подарочная коробка с Kinder Chocolate, Bueno, Country, Maxi, четырьмя шоколадными яйцами и Raffaello',
+    imageWidth: 1200,
+    imageHeight: 1215,
     label: 'Самый сладкий праздник',
     contents: [
-      { name: 'Kinder Chocolate, батончик', quantity: 8 },
-      { name: 'Kinder Surprise, шоколадное яйцо', quantity: 2 },
-      { name: 'Kinder Bueno, упаковка', quantity: 2 },
+      { name: 'Kinder Chocolate, упаковка', quantity: 2 },
+      { name: 'Kinder Country, батончик', quantity: 2 },
+      { name: 'Kinder Maxi, батончик', quantity: 2 },
+      { name: 'Kinder Bueno, упаковка', quantity: 1 },
+      { name: 'Kinder Surprise, шоколадное яйцо', quantity: 4 },
+      { name: 'Raffaello, конфета', quantity: 6 },
     ],
-    packaging: 'Праздничная картонная коробка с лентой и открыткой',
+    packaging: 'Белая картонная коробка с красным бумажным наполнителем',
   },
   {
     id: 'sweet-thank-you',
     name: 'Сладкое спасибо',
-    description: 'Аккуратный знак внимания к весенним праздникам, который легко подарить каждому.',
-    audiences: ['Компаниям', 'Для перепродажи'],
+    description: 'Подарок в форме сердца с любимыми сладостями и красной атласной лентой.',
+    audiences: ['Компаниям', 'Родителям', 'Для перепродажи', 'Организаторам'],
     occasions: ['8 марта / 23 февраля', 'Для перепродажи'],
-    image: '/images/eco-gifts.webp',
+    image: '/images/gallery-heart-20260922.webp',
     imageAlt:
-      'Иллюстрация небольшой коробки со сладостями и праздничным наполнителем без логотипов',
+      'Красная коробка в форме сердца с шестью шоколадными яйцами Kinder, батончиками и Raffaello',
+    imageWidth: 1086,
+    imageHeight: 1448,
     label: 'Благодарность со вкусом',
     contents: [
-      { name: 'Kinder Chocolate, батончик', quantity: 4 },
-      { name: 'Kinder Bueno, упаковка', quantity: 2 },
+      { name: 'Kinder Surprise, шоколадное яйцо', quantity: 6 },
       { name: 'Kinder Country, батончик', quantity: 2 },
+      { name: 'Kinder Maxi, батончик', quantity: 1 },
+      { name: 'Kinder Chocolate, батончик', quantity: 1 },
+      { name: 'Raffaello, конфета', quantity: 7 },
     ],
-    packaging: 'Компактная картонная коробка, бумажный наполнитель и лента',
-  },
-  {
-    id: 'winter-together',
-    name: 'Празднуем вместе',
-    description: 'Большой новогодний набор для команды или праздничной розничной коллекции.',
-    audiences: ['Компаниям', 'Для перепродажи', 'Организаторам'],
-    occasions: ['Новый год', 'Для перепродажи'],
-    image: '/images/winter-gifts.webp',
-    imageAlt: 'Иллюстрация подарочной коробки со сладостями в новогоднем оформлении без логотипов',
-    label: 'Для вашей команды',
-    contents: [
-      { name: 'Kinder Chocolate, батончик', quantity: 10 },
-      { name: 'Kinder Surprise, шоколадное яйцо', quantity: 2 },
-      { name: 'Kinder Bueno, упаковка', quantity: 2 },
-      { name: 'Kinder Country, батончик', quantity: 2 },
-    ],
-    packaging: 'Большая картонная коробка с наполнителем и поздравительной открыткой',
+    packaging: 'Коробка в форме сердца, красный наполнитель и атласная лента',
   },
   {
     id: 'big-occasion',
     name: 'Большой повод',
-    description: 'Выразительный подарок для корпоратива, клиентов и масштабного мероприятия.',
+    description: 'Большой набор с семью шоколадными яйцами для корпоратива и масштабного события.',
     audiences: ['Компаниям', 'Для перепродажи', 'Организаторам'],
-    occasions: ['Корпоратив', 'Для перепродажи'],
-    image: '/images/hero-gifts.webp',
-    imageAlt: 'Иллюстрация большой открытой подарочной коробки со сладостями без логотипов',
+    occasions: ['Корпоратив', 'Для перепродажи', 'Новый год'],
+    image: '/images/gallery-pink-20260922.webp',
+    imageAlt:
+      'Большой набор с семью яйцами Kinder Surprise, шоколадом, Bueno, Country и Nutella B-ready в розовом наполнителе',
+    imageWidth: 1200,
+    imageHeight: 1200,
     label: 'С вниманием к каждому',
     contents: [
-      { name: 'Kinder Chocolate, батончик', quantity: 8 },
-      { name: 'Kinder Surprise, шоколадное яйцо', quantity: 3 },
+      { name: 'Kinder Surprise, шоколадное яйцо', quantity: 7 },
+      { name: 'Kinder Country, батончик', quantity: 2 },
+      { name: 'Kinder Chocolate, батончик', quantity: 4 },
+      { name: 'Kinder Chocolate, упаковка', quantity: 1 },
       { name: 'Kinder Bueno, упаковка', quantity: 2 },
-      { name: 'Kinder Country, батончик', quantity: 1 },
+      { name: 'Nutella B-ready, батончик', quantity: 2 },
     ],
-    packaging: 'Большая картонная коробка, цветной наполнитель и лента',
+    packaging: 'Большая белая картонная коробка с розовым бумажным наполнителем',
   },
 ];

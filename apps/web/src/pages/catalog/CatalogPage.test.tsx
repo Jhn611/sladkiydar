@@ -27,7 +27,7 @@ afterEach(() => vi.unstubAllGlobals());
 describe('catalog selection', () => {
   it('combines audience and occasion filters and offers a reset for an empty result', async () => {
     const user = mountCatalog();
-    expect(screen.getAllByRole('article')).toHaveLength(6);
+    expect(screen.getAllByRole('article')).toHaveLength(4);
     await user.click(screen.getByRole('button', { name: 'Детским садам и школам' }));
     expect(screen.getAllByRole('article')).toHaveLength(2);
     await user.selectOptions(screen.getByLabelText('Повод'), 'Новый год');
@@ -35,12 +35,12 @@ describe('catalog selection', () => {
     expect(screen.getByRole('heading', { name: 'Новогоднее чудо' })).toBeVisible();
     await user.selectOptions(screen.getByLabelText('Повод'), 'Корпоратив');
     expect(screen.getAllByRole('article')).toHaveLength(1);
-    expect(screen.getByRole('heading', { name: 'Маленькая радость' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Спасибо, команда!' })).toBeVisible();
     await user.selectOptions(screen.getByLabelText('Повод'), 'Для перепродажи');
     expect(screen.queryByRole('article')).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Для вашего повода — особый набор' })).toBeVisible();
     await user.click(screen.getByRole('button', { name: 'Показать все наборы' }));
-    expect(screen.getAllByRole('article')).toHaveLength(6);
+    expect(screen.getAllByRole('article')).toHaveLength(4);
   });
 
   it('opens a filtered selection from hero links', () => {
