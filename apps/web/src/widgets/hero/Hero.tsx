@@ -24,12 +24,12 @@ const audiences = [
 ];
 const slides = [
   {
-    image: 'hero-team-v4-20260922',
+    image: 'hero-team-v5-20260922',
     title: 'Большой повод для радости',
     alt: 'Коллеги в офисе с подарочными наборами Kinder в коробке и в форме сердца',
   },
   {
-    image: 'hero-children-v4-20260922',
+    image: 'hero-children-v5-20260922',
     title: 'Радость для самых любимых',
     alt: 'Девочка и мальчик с подарочными наборами Kinder',
   },

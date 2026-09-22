@@ -33,8 +33,8 @@ Crop-safe art direction: camera far enough back to keep complete heads, hands, b
 
 ## Готовые файлы
 
-- Взрослые: apps/web/public/images/hero-team-v4-20260922.webp и вариант -768.webp.
-- Дети: apps/web/public/images/hero-children-v4-20260922.webp и вариант -768.webp.
+- Взрослые: apps/web/public/images/hero-team-v5-20260922.webp и вариант -768.webp.
+- Дети: apps/web/public/images/hero-children-v5-20260922.webp и вариант -768.webp.
 - Размеры: 1440 × 1080 и 768 × 576, пропорции 4:3. Зум-анимация фотографии убрана, чтобы не обрезать края кадра.
 
 ## Коррекция перспективы и освещения
@@ -86,3 +86,29 @@ Precise geometry: rotate the right person's gift about its vertical axis approxi
 Do NOT mirror the photograph or flip product labels; text must remain normally oriented. Do NOT simply rotate a flat rectangle in the image plane. The left person's gift is already correctly oriented inward: leave it untouched, and make the right gift's orientation a physically plausible counterpart facing toward it.
 Preserve both people's faces, clothes and expressions, the LEFT person's entire gift, room, table, lighting direction, exposure, shadows, colors, framing and resolution. Match the already corrected natural daylight and contact shadows after rotating the right gift. Preserve its existing exact contents, packaging shape, color and any bow. Do not add/remove/replace products. Keep all heads, both complete boxes and the ribbon inside the 4:3 landscape frame. No new text or watermark.
 ```
+
+## Уменьшение поворота к центру — версия 5
+
+Встроенный image_gen, режим precise-object-edit. Исходники — одобренные кадры версии 4: дети (image 1), взрослые (image 2). Уменьшен поворот правого набора к центру: ориентир 8–10° вместо прежних 20–25°. Сохранены общий кадр, свет и естественный наклон коробок. Файлы версии 5 перечислены в разделе «Готовые файлы» выше.
+
+### Дети
+
+```text
+EDIT TARGET: IMAGE 1, the GIRL AND BOY in the home. IMAGE 2 (adult couple) is not the edit target. Change only the PINK-filled square gift box held by the BOY ON THE RIGHT. Leave the girl and her red-filled square gift exactly as they are.
+Use case: precise-object-edit. This is a SMALL final correction of an already approved photo. The right person's gift has been turned much too far toward the image center. REDUCE ONLY THAT INWARD TURN, to a subtle 8–10 degrees of yaw from directly facing the camera, approximately one third of its current inward rotation. The gift still points slightly toward the other person, but shows a much broader front opening and only a narrow strip of the RIGHT outer sidewall. Do not reverse the direction, make it completely front-on, or turn it further inward.
+Rotate the entire physical gift coherently in 3D, including all packages, filler, curved eggs, labels, box rim and ribbon where present. Keep the existing natural backward tilt and tabletop contact. Adjust the supporting fingers only as required for the small turn. Maintain believable shallow gift-box depth, readable normally oriented labels, and consistent foreshortening; do not paste a flat product photo into the opening.
+KEEP UNCHANGED: both people's identities and facial expressions, hair, clothing, the entire LEFT person's gift and hands, room, table, camera position, landscape 4:3 framing, spacing, exposure, colors and window lighting. Preserve the right gift's exact assortment and recognizable package arrangement. Preserve realistic soft contact shadows and foil highlights, matching the unchanged people and room. No extra products, no added text, no watermark. The result should look nearly identical to this approved photo except for the noticeably smaller inward yaw of the RIGHT gift. Keep all heads, hands and complete gifts inside the frame. Return a single landscape 4:3 photograph.
+```
+
+### Взрослые
+
+```text
+EDIT TARGET: IMAGE 2, the ADULT MAN AND WOMAN in the office. IMAGE 1 (children) is not the edit target. Change only the RED HEART-shaped gift held by the WOMAN ON THE RIGHT, including its contents and bow. Leave the man and his blue-filled square gift exactly as they are.
+Use case: precise-object-edit. This is a SMALL final correction of an already approved photo. The right person's gift has been turned much too far toward the image center. REDUCE ONLY THAT INWARD TURN, to a subtle 8–10 degrees of yaw from directly facing the camera, approximately one third of its current inward rotation. The gift still points slightly toward the other person, but shows a much broader front opening and only a narrow strip of the RIGHT outer sidewall. Do not reverse the direction, make it completely front-on, or turn it further inward.
+Rotate the entire physical gift coherently in 3D, including all packages, filler, curved eggs, labels, box rim and ribbon where present. Keep the existing natural backward tilt and tabletop contact. Adjust the supporting fingers only as required for the small turn. Maintain believable shallow gift-box depth, readable normally oriented labels, and consistent foreshortening; do not paste a flat product photo into the opening.
+KEEP UNCHANGED: both people's identities and facial expressions, hair, clothing, the entire LEFT person's gift and hands, room, table, camera position, landscape 4:3 framing, spacing, exposure, colors and window lighting. Preserve the right gift's exact assortment and recognizable package arrangement. Preserve realistic soft contact shadows and foil highlights, matching the unchanged people and room. No extra products, no added text, no watermark. The result should look nearly identical to this approved photo except for the noticeably smaller inward yaw of the RIGHT gift. Keep all heads, hands and complete gifts inside the frame. Return a single landscape 4:3 photograph.
+```
+
+## Выбранный размер наборов
+
+Для публикации пользователь выбрал версию 5 с наборами прежнего, большего размера и исправленным мягким поворотом к центру. Уменьшенные варианты оставлены только для сравнения в локальной папке `.cache/hero-size-comparison/` и к сайту не подключены.
