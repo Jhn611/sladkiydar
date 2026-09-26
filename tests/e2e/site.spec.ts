@@ -342,10 +342,8 @@ test('legal links open the supplied policy and verified operator details', async
   const footer = page.getByRole('contentinfo');
   await footer.getByRole('link', { name: /политик/i }).click();
   await expect(page).toHaveURL(/\/privacy$/);
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Политика конфиденциальности «Доверху»',
-  );
-  await expect(page.locator('main time')).toHaveText('24.09.2026 г.');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Политика конфиденциальности');
+  await expect(page.locator('main time')).toHaveText('26.09.2026 г.');
   await expect(page.locator('main article > section')).toHaveCount(15);
   await expect(page.locator('main')).toContainText('771771661209');
   await expect(page.locator('main')).toContainText('321774600775832');

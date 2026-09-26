@@ -28,7 +28,7 @@ export const leads = pgTable('leads', {
   utmCampaign: varchar('utm_campaign', { length: 200 }),
   utmContent: varchar('utm_content', { length: 200 }),
   utmTerm: varchar('utm_term', { length: 200 }),
-  consentVersion: varchar('consent_version', { length: 50 }).notNull().default('2026-09-24'),
+  consentVersion: varchar('consent_version', { length: 50 }).notNull().default('2026-09-26'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });

@@ -34,9 +34,9 @@ export default function PrivacyPage() {
               ← На главную
             </Link>
             <p className={styles.eyebrow}>О ваших данных</p>
-            <h1>Политика конфиденциальности «{site.name}»</h1>
+            <h1>Политика конфиденциальности</h1>
             <p className={styles.revision}>
-              Редакция <time dateTime="2026-09-24">24.09.2026 г.</time>
+              Редакция <time dateTime="2026-09-26">26.09.2026 г.</time>
             </p>
             <div className={styles.policyIntro}>
               <p>

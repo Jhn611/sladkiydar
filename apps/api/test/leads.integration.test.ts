@@ -59,7 +59,7 @@ describe('lead acceptance and transactional outbox', () => {
       name: 'Анна Иванова',
       phone: '+79991234567',
       message: 'Нужны подарки',
-      consentVersion: '2026-09-24',
+      consentVersion: '2026-09-26',
     });
     expect(job).toMatchObject({ leadId: lead?.id, status: 'pending', attempts: 0 });
   });
