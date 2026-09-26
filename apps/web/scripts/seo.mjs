@@ -7,7 +7,7 @@ if (!['http:', 'https:'].includes(origin.protocol))
 const routes = [
   [
     '/agreement',
-    'Пользовательское соглашение — Сладкий Дар',
+    'Пользовательское соглашение — Доверху',
     'Условия использования сайта и запроса информации о подарочных наборах.',
   ],
   [
@@ -40,10 +40,10 @@ const routes = [
     'Новогоднее настроение — набор с Kinder',
     'Идея праздничного набора с шоколадом Kinder.',
   ],
-  ['/contacts', 'Контакты — Сладкий Дар', 'Обсудите оптовый заказ наборов с продукцией Kinder.'],
+  ['/contacts', 'Контакты — Доверху', 'Обсудите оптовый заказ наборов с продукцией Kinder.'],
   [
     '/privacy',
-    'Конфиденциальность — Сладкий Дар',
+    'Конфиденциальность — Доверху',
     'Информация об обработке данных при отправке заявки.',
   ],
 ];
@@ -66,12 +66,12 @@ const fontPreloads = (await readdir('dist/assets'))
 const heroPreload =
   '<link rel="preload" as="image" href="/images/hero-team-people-20260922.webp" imagesrcset="/images/hero-team-people-20260922-768.webp 768w, /images/hero-team-people-20260922.webp 1440w" imagesizes="(max-width: 500px) calc(100vw - 40px), (max-width: 950px) 92vw, (max-width: 1435px) 44vw, 634px" fetchpriority="high"/>';
 for (const [path, pageTitle, description] of routes) {
-  const title = pageTitle.includes('Сладкий Дар') ? pageTitle : pageTitle + ' — Сладкий Дар';
+  const title = pageTitle.includes('Доверху') ? pageTitle : pageTitle + ' — Доверху';
   const canonical = new URL(path, origin).href;
   const meta =
     '<link data-rh="true" rel="canonical" href="' +
     escape(canonical) +
-    '"/><meta data-rh="true" property="og:type" content="website"/><meta data-rh="true" property="og:locale" content="ru_RU"/><meta data-rh="true" property="og:title" content="' +
+    '"/><meta data-rh="true" property="og:site_name" content="Доверху"/><meta data-rh="true" property="og:type" content="website"/><meta data-rh="true" property="og:locale" content="ru_RU"/><meta data-rh="true" property="og:title" content="' +
     escape(title) +
     '"/><meta data-rh="true" property="og:description" content="' +
     escape(description) +

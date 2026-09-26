@@ -48,8 +48,8 @@ export default function CaseDetailsPage() {
     return (
       <section className={styles.page}>
         <Seo
-          title="Проект не найден — Сладкий Дар"
-          description="Посмотрите другие идеи подарочных наборов с Kinder в подборке «Сладкий Дар»."
+          title="Проект не найден — Доверху"
+          description="Посмотрите другие идеи подарочных наборов с Kinder в подборке «Доверху»."
           path="/cases"
         />
         <Container>
@@ -70,7 +70,7 @@ export default function CaseDetailsPage() {
   return (
     <>
       <Seo
-        title={`${item.title} — Сладкий Дар`}
+        title={`${item.title} — Доверху`}
         description={item.description}
         path={`/cases/${item.slug}`}
       />

@@ -18,7 +18,7 @@ const leadDateFormatter = new Intl.DateTimeFormat('ru-RU', {
 
 export function formatLeadMessage(lead: Lead) {
   const lines = [
-    'Новая заявка · Сладкий Дар',
+    'Новая заявка · Доверху',
     `Заявка #${lead.id}`,
     `Дата: ${leadDateFormatter.format(lead.createdAt)} (МСК)`,
     `Имя: ${lead.name}`,

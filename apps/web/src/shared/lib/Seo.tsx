@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { site } from '../config/site';
 const origin = import.meta.env.VITE_SITE_URL || window.location.origin;
 export function Seo({
   title,
@@ -10,15 +11,16 @@ export function Seo({
   path: string;
 }) {
   const canonical = new URL(path, origin).href;
+  const pageTitle = title.includes(site.name) ? title : `${title} — ${site.name}`;
   return (
     <Helmet>
-      <title>{title.includes('Сладкий Дар') ? title : `${title} — Сладкий Дар`}</title>
+      <title>{pageTitle}</title>
       <meta name="description" content={description} />
       <link rel="canonical" href={canonical} />
       <meta property="og:type" content="website" />
       <meta property="og:locale" content="ru_RU" />
-      <meta property="og:site_name" content="Сладкий Дар" />
-      <meta property="og:title" content={title} />
+      <meta property="og:site_name" content={site.name} />
+      <meta property="og:title" content={pageTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={canonical} />
       <meta

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Container } from '../../shared/ui/Container';
 import { Icon } from '../../shared/ui/Icon';
 import { Button } from '../../shared/ui/Button';
+import { BrandLogo } from '../../shared/ui/BrandLogo';
 import { site } from '../../shared/config/site';
 import { useLeadModal } from '../../features/open-lead-modal/useLeadModal';
 import s from './Footer.module.css';
@@ -12,9 +13,8 @@ export function Footer() {
       <Container>
         <div className={s.top}>
           <div>
-            <Link to="/" className={s.logo}>
-              <Icon name="gift" size={32} />
-              <span>Сладкий Дар</span>
+            <Link to="/" className={s.logo} aria-label="Доверху — на главную">
+              <BrandLogo />
             </Link>
             <p>
               Маленькие сладости.
@@ -32,9 +32,11 @@ export function Footer() {
           <div className={s.contact}>
             <a href={site.phoneHref}>{site.phone}</a>
             <span>{site.workingHours}</span>
-            <a className={s.email} href={'mailto:' + site.email}>
-              {site.email}
-            </a>
+            {site.email && (
+              <a className={s.email} href={'mailto:' + site.email}>
+                {site.email}
+              </a>
+            )}
             <Button onClick={() => openLeadModal('footer-price')}>
               Получить прайс-лист <Icon name="arrow-up-right" size={18} />
             </Button>
@@ -45,8 +47,7 @@ export function Footer() {
           <span>
             ИНН {site.inn} · ОГРНИП {site.ogrnip}
           </span>
-          <span>Юридический адрес: {site.address}</span>
-          {site.isDemoContacts && <small>E-mail и реквизиты временные, для макета.</small>}
+          {site.address && <span>Юридический адрес: {site.address}</span>}
         </div>
         <div className={s.bottom}>
           <span>

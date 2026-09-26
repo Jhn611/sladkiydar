@@ -40,7 +40,7 @@ for (const width of widths) {
       await page.goto(path);
       await expect(page.locator('h1')).toHaveCount(1);
       await expect(page.locator('h1')).toBeVisible();
-      await expect(page).toHaveTitle(/Сладкий Дар/);
+      await expect(page).toHaveTitle(/Доверху/);
       await expect(page.locator('meta[name=description]')).toHaveCount(1);
       await expect(page.locator('link[rel=canonical]')).toHaveCount(1);
       await page.evaluate(() => document.fonts.ready);
@@ -337,16 +337,23 @@ test('showcase changes composition with the keyboard and requests the selected s
   expect(payload?.source).toBe('showcase-product:big-occasion');
 });
 
-test('legal links describe the current required contacts and optional comment', async ({
-  page,
-}) => {
+test('legal links open the supplied policy and verified operator details', async ({ page }) => {
   await page.goto('/');
   const footer = page.getByRole('contentinfo');
   await footer.getByRole('link', { name: /политик/i }).click();
   await expect(page).toHaveURL(/\/privacy$/);
-  await expect(page.locator('main')).toContainText('Имя и телефон — обязательные поля.');
-  await expect(page.locator('main')).toContainText('Комментарий вы добавляете по желанию.');
-  await page.locator('main').getByRole('link', { name: 'пользовательском соглашении' }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Политика конфиденциальности «Доверху»',
+  );
+  await expect(page.locator('main time')).toHaveText('24.09.2026 г.');
+  await expect(page.locator('main article > section')).toHaveCount(15);
+  await expect(page.locator('main')).toContainText('771771661209');
+  await expect(page.locator('main')).toContainText('321774600775832');
+  await expect(page.locator('main')).not.toContainText('Редакция для макета');
+  await page
+    .getByRole('contentinfo')
+    .getByRole('link', { name: 'Пользовательское соглашение' })
+    .click();
   await expect(page).toHaveURL(/\/agreement$/);
   await expect(
     page.getByRole('heading', { level: 1, name: 'Пользовательское соглашение' }),

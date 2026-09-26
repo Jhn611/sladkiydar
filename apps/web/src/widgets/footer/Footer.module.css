@@ -10,14 +10,6 @@
 }
 .logo {
   display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 1.6rem;
-  font-weight: 800;
-  letter-spacing: -0.06em;
-}
-.logo svg {
-  color: var(--color-primary-hover);
 }
 .top p {
   margin-top: 20px;

@@ -37,7 +37,7 @@ export default function CasesPage() {
   return (
     <>
       <Seo
-        title="Идеи и проекты — Сладкий Дар"
+        title="Идеи и проекты — Доверху"
         description="Концепции наборов Kinder: сладкие подарки, подарки партнёрам и новогодние коллекции. Найдите свой повод."
         path="/cases"
       />

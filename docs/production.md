@@ -1,4 +1,4 @@
-# Production: «Сладкий Дар»
+# Production: «Доверху»
 
 Сайт: **https://sladkiydar.ivanjhn.ru**. Сервер: `77.91.115.126`, Ubuntu 24.04, hostname `vm-v3-nano` (в панели — `ru-vmv3-nano`), 2 vCPU, 4 ГБ RAM, 60 ГБ диска и активированный swap 1 ГБ. При настройке установлено ядро `6.8.0-139`, Docker `29.8` и Compose `5.5`.
 

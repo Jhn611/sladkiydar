@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Container } from '../../shared/ui/Container';
 import { Button } from '../../shared/ui/Button';
+import { BrandLogo } from '../../shared/ui/BrandLogo';
 import { Icon } from '../../shared/ui/Icon';
 import { IconButton } from '../../shared/ui/IconButton';
 import { Modal } from '../../shared/ui/Modal';
@@ -27,13 +28,8 @@ export function Header() {
   return (
     <header className={s.header}>
       <Container className={s.inner}>
-        <Link to="/" className={s.logo} aria-label="Сладкий Дар — на главную">
-          <span className={s.brandMark}>
-            <Icon name="gift" size={29} />
-          </span>
-          <span>
-            Сладкий<span className={s.brandSecond}>Дар</span>
-          </span>
+        <Link to="/" className={s.logo} aria-label="Доверху — на главную">
+          <BrandLogo />
         </Link>
         <nav className={s.desktopNav} aria-label="Главная навигация">
           {links.map((l) => (

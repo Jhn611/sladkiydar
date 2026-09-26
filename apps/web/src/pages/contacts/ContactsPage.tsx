@@ -12,7 +12,7 @@ export default function ContactsPage() {
   return (
     <>
       <Seo
-        title="Контакты — Сладкий Дар"
+        title="Контакты — Доверху"
         description="Получите фото наборов, персональный прайс-лист и помощь менеджера. Наборы с настоящим Kinder для компаний, детских садов, семей и мероприятий."
         path="/contacts"
       />
@@ -52,9 +52,11 @@ export default function ContactsPage() {
                   {site.phone} <Icon name="phone" />
                 </a>
                 <p className={styles.contactHours}>{site.workingHours}</p>
-                <a href={`mailto:${site.email}`}>
-                  {site.email} <Icon name="arrow-up-right" />
-                </a>
+                {site.email && (
+                  <a href={`mailto:${site.email}`}>
+                    {site.email} <Icon name="arrow-up-right" />
+                  </a>
+                )}
                 <p className={styles.placeholder}>Ответим и пришлём прайс за 15 минут.</p>
               </div>
             </div>
@@ -80,17 +82,13 @@ export default function ContactsPage() {
                     <dt>ОГРНИП</dt>
                     <dd>{site.ogrnip}</dd>
                   </div>
-                  <div>
-                    <dt>Юридический адрес</dt>
-                    <dd>{site.address}</dd>
-                  </div>
+                  {site.address && (
+                    <div>
+                      <dt>Юридический адрес</dt>
+                      <dd>{site.address}</dd>
+                    </div>
+                  )}
                 </dl>
-                {site.isDemoContacts && (
-                  <p className={styles.placeholder}>
-                    E-mail, ИНН, ОГРНИП и адрес временные, для макета. Перед публикацией заменим их
-                    на действующие.
-                  </p>
-                )}
               </div>
             </div>
           </div>

@@ -2,105 +2,113 @@ import { Link } from 'react-router-dom';
 import { site } from '../../shared/config/site';
 import { Seo } from '../../shared/lib/Seo';
 import { Container } from '../../shared/ui/Container';
+import { privacyIntroduction, privacySections } from './privacyContent';
 import styles from './PrivacyPage.module.css';
 
+function PolicyText({ text }: { text: string }) {
+  return text.split(/(https?:\/\/[^\s,;]+)/g).map((part, index) =>
+    /^https?:\/\//.test(part) ? (
+      <a href={part} key={index}>
+        {part}
+      </a>
+    ) : (
+      part
+    ),
+  );
+}
+
 export default function PrivacyPage() {
+  const operatorName = site.operator.replace(/^ИП /, 'Индивидуальный предприниматель ');
+
   return (
     <>
       <Seo
-        title="Политика обработки персональных данных — Сладкий Дар"
-        description="Какие данные передаются через форму заявки и как они используются на сайте Сладкий Дар."
+        title={`Политика конфиденциальности — ${site.name}`}
+        description={`Политика конфиденциальности ${site.name}: порядок обработки и защиты персональных данных, права пользователей и реквизиты оператора.`}
         path="/privacy"
       />
       <section className={styles.page}>
         <Container>
-          <div className={styles.content}>
+          <article className={styles.content}>
             <Link className={styles.back} to="/">
               ← На главную
             </Link>
             <p className={styles.eyebrow}>О ваших данных</p>
-            <h1>Политика обработки персональных данных</h1>
-            <p className={styles.intro}>
-              Для заявки нужны имя и телефон. Комментарий можно оставить пустым. Используем
-              сведения, чтобы ответить на ваше обращение и подобрать набор.
+            <h1>Политика конфиденциальности «{site.name}»</h1>
+            <p className={styles.revision}>
+              Редакция <time dateTime="2026-09-24">24.09.2026 г.</time>
             </p>
-            <div className={styles.notice}>
-              <strong>Редакция для макета.</strong> Оператор — {site.operator}. E-mail и реквизиты
-              ниже временные. До публичного запуска оператор должен подтвердить окончательные
-              условия обработки, срок хранения, получателей данных и порядок обращений.
+            <div className={styles.policyIntro}>
+              <p>
+                <strong>Оператор:</strong> {operatorName}
+              </p>
+              <p>{privacyIntroduction}</p>
             </div>
-            <section>
-              <h2>1. Оператор сайта</h2>
-              <p>
-                {site.operator}. ИНН: {site.inn}. ОГРНИП: {site.ogrnip}. Юридический адрес:{' '}
-                {site.address}.
-              </p>
-              <p>
-                Контакт для обращений: <a href={`mailto:${site.email}`}>{site.email}</a>. Телефон:{' '}
-                <a href={site.phoneHref}>{site.phone}</a>. E-mail и цифровые реквизиты приведены для
-                макета и подлежат замене.
-              </p>
+            <details className={styles.contents}>
+              <summary>Содержание политики</summary>
+              <nav aria-label="Разделы политики конфиденциальности">
+                <ol>
+                  {privacySections.map((section) => (
+                    <li key={section.number}>
+                      <a href={`#privacy-section-${section.number}`}>{section.title}</a>
+                    </li>
+                  ))}
+                  <li>
+                    <a href="#privacy-section-15">Реквизиты оператора</a>
+                  </li>
+                </ol>
+              </nav>
+            </details>
+            {privacySections.map((section) => (
+              <section id={`privacy-section-${section.number}`} key={section.number}>
+                <h2>
+                  {section.number}. {section.title}
+                </h2>
+                {section.paragraphs.map((paragraph, index) => (
+                  <p
+                    className={paragraph.number ? styles.clause : undefined}
+                    data-depth={paragraph.depth}
+                    key={paragraph.number || index}
+                  >
+                    {paragraph.number && (
+                      <span className={styles.clauseNumber}>{paragraph.number}</span>
+                    )}
+                    <span>
+                      <PolicyText text={paragraph.text} />
+                    </span>
+                  </p>
+                ))}
+              </section>
+            ))}
+            <section id="privacy-section-15">
+              <h2>15. Реквизиты оператора</h2>
+              <p>{operatorName}</p>
+              <dl className={styles.requisites}>
+                {site.email && (
+                  <div>
+                    <dt>Электронная почта</dt>
+                    <dd>
+                      <a href={`mailto:${site.email}`}>{site.email}</a>
+                    </dd>
+                  </div>
+                )}
+                <div>
+                  <dt>ОГРНИП</dt>
+                  <dd>{site.ogrnip}</dd>
+                </div>
+                <div>
+                  <dt>ИНН</dt>
+                  <dd>{site.inn}</dd>
+                </div>
+                {site.address && (
+                  <div>
+                    <dt>Адрес</dt>
+                    <dd>{site.address}</dd>
+                  </div>
+                )}
+              </dl>
             </section>
-            <section>
-              <h2>2. Какие сведения передаёт форма</h2>
-              <p>
-                Имя и телефон — обязательные поля. Комментарий вы добавляете по желанию. В
-                комментарии достаточно указать повод, количество наборов или вопрос менеджеру. Не
-                передавайте сведения, которые не относятся к заявке.
-              </p>
-              <p>
-                Вместе с заявкой передаются адрес страницы, источник формы, адрес страницы перехода
-                при его наличии, UTM-метки и технический идентификатор отправки. Они помогают
-                определить источник обращения и избежать повторного создания заявки.
-              </p>
-            </section>
-            <section>
-              <h2>3. Для чего используются данные</h2>
-              <p>
-                Контактные сведения нужны для обратного звонка, отправки запрошенного прайс-листа,
-                консультации по готовым и индивидуальным наборам, объёму, срокам и доставке.
-                Отправка формы не подписывает вас на рекламную рассылку.
-              </p>
-            </section>
-            <section>
-              <h2>4. Обработка и хранение</h2>
-              <p>
-                Обращение сохраняется в базе данных сайта. Для работы с заявками предусмотрено
-                уведомление ответственного менеджера; оно может содержать заполненные вами поля и
-                сведения об источнике обращения.
-              </p>
-              <p>
-                Оператор определяет круг сотрудников, которым нужен доступ к заявкам, порядок защиты
-                и срок хранения данных. Точный срок хранения и порядок прекращения обработки будут
-                опубликованы после подтверждения оператором до начала публичного приёма заявок.
-              </p>
-            </section>
-            <section>
-              <h2>5. Согласие и обращения</h2>
-              <p>
-                Перед отправкой формы вы самостоятельно отмечаете согласие на обработку персональных
-                данных. Чтобы уточнить, изменить или удалить переданные сведения, а также отозвать
-                согласие, обратитесь к оператору и укажите информацию, по которой можно найти вашу
-                заявку.
-              </p>
-              <p>
-                Действующий канал для таких обращений будет указан вместо временного адреса до
-                публичного запуска сайта.
-              </p>
-            </section>
-            <section>
-              <h2>6. Технологии сайта</h2>
-              <p>
-                В текущей версии не подключены сторонние рекламные и аналитические счётчики. Поля
-                формы не сохраняются в локальное хранилище браузера. До успешной отправки данные
-                остаются в открытой форме; после подтверждения поля очищаются.
-              </p>
-              <p>
-                Условия использования сайта описаны в{' '}
-                <Link to="/agreement">пользовательском соглашении</Link>.
-              </p>
-            </section>
-          </div>
+          </article>
         </Container>
       </section>
     </>

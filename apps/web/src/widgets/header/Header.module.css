@@ -13,30 +13,8 @@
   gap: 2rem;
 }
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  font-size: 1.55rem;
-  font-weight: 800;
-  letter-spacing: -0.065em;
-  line-height: 1;
+  display: inline-flex;
   flex-shrink: 0;
-}
-.brandSecond {
-  display: block;
-  color: var(--color-primary);
-  font-size: 1.45rem;
-  line-height: 0.95;
-}
-.brandMark {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 46px;
-  background: var(--color-primary);
-  color: white;
-  border-radius: 12px;
-  transform: rotate(-6deg);
 }
 .desktopNav {
   display: flex;
@@ -165,19 +143,6 @@
   .inner {
     min-height: 76px;
     gap: 0.9rem;
-  }
-  .logo {
-    font-size: 1.3rem;
-  }
-  .brandSecond {
-    font-size: 1.22rem;
-  }
-  .brandMark {
-    width: 36px;
-    height: 40px;
-  }
-  .brandMark svg {
-    width: 24px;
   }
   .contact,
   .action {

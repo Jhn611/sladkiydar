@@ -8,8 +8,8 @@ export default function AgreementPage() {
   return (
     <>
       <Seo
-        title="Пользовательское соглашение — Сладкий Дар"
-        description="Условия использования сайта Сладкий Дар: выбор подарочных наборов и обращение к менеджеру."
+        title="Пользовательское соглашение — Доверху"
+        description="Условия использования сайта Доверху: выбор подарочных наборов и обращение к менеджеру."
         path="/agreement"
       />
       <section className={styles.page}>
@@ -24,10 +24,6 @@ export default function AgreementPage() {
               Сайт «{site.name}» помогает познакомиться с подарочными наборами, получить
               персональный прайс-лист и консультацию менеджера.
             </p>
-            <div className={styles.notice}>
-              <strong>Редакция для макета.</strong> Оператор — {site.operator}. Окончательную
-              редакцию и действующие реквизиты оператор подтвердит перед публичным запуском.
-            </div>
             <section>
               <h2>1. Назначение сайта</h2>
               <p>
@@ -76,13 +72,17 @@ export default function AgreementPage() {
             <section>
               <h2>5. Обратная связь и реквизиты</h2>
               <p>
-                {site.operator}. ИНН: {site.inn}. ОГРНИП: {site.ogrnip}. Юридический адрес:{' '}
-                {site.address}.
+                {site.operator}. ИНН: {site.inn}. ОГРНИП: {site.ogrnip}.
+                {site.address && <> Юридический адрес: {site.address}.</>}
               </p>
               <p>
-                Телефон: <a href={site.phoneHref}>{site.phone}</a>. E-mail:{' '}
-                <a href={`mailto:${site.email}`}>{site.email}</a>. E-mail, адрес и цифровые
-                реквизиты временные и используются для макета.
+                Телефон: <a href={site.phoneHref}>{site.phone}</a>.
+                {site.email && (
+                  <>
+                    {' '}
+                    E-mail: <a href={`mailto:${site.email}`}>{site.email}</a>.
+                  </>
+                )}
               </p>
             </section>
           </div>

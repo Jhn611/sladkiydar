@@ -49,6 +49,7 @@ describe('VK community delivery', () => {
       disable_mentions: '1',
       dont_parse_links: '1',
     });
+    expect(body.get('message')).toContain('Новая заявка · Доверху');
     expect(body.get('message')).toContain('Имя: <Анна>');
     expect(body.get('message')).toContain('Иван & партнёры');
     expect(body.get('message')).not.toContain('<b>');

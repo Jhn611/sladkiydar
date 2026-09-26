@@ -1,0 +1,23 @@
+{
+  "name": "Доверху — сладкие подарки оптом",
+  "short_name": "Доверху",
+  "lang": "ru",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#fffaf7",
+  "theme_color": "#d92618",
+  "icons": [
+    {
+      "src": "/brand/doverhu-icon-192-20260926.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/brand/doverhu-icon-512-20260926.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
