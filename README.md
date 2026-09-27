@@ -84,6 +84,7 @@ pnpm --filter @gift/api dev:worker
 | Переменная                                          | Назначение                                                                                                              |
 | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | `DOMAIN`                                            | Адрес Caddy: `http://localhost` локально или `gifts.example.com` для автоматического HTTPS                              |
+| `REDIRECT_DOMAINS`                                  | Необязательные дополнительные домены через пробел; перенаправляются на `PUBLIC_ORIGIN` (308), локально оставьте пустым  |
 | `PUBLIC_ORIGIN`                                     | Разрешённый origin формы без завершающего `/`: локально `http://localhost:5173`, production `https://gifts.example.com` |
 | `VITE_SITE_URL`                                     | Публичный URL для canonical, OpenGraph и sitemap; задаётся **до сборки**                                                |
 | `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` | База и административная роль: создание PostgreSQL и миграции                                                            |

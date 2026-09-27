@@ -40,6 +40,8 @@ services:
       - '443:443/udp'
     environment:
       DOMAIN: ${DOMAIN:?Set DOMAIN in .env}
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:?Set PUBLIC_ORIGIN in .env}
+      REDIRECT_DOMAINS: ${REDIRECT_DOMAINS:-}
     volumes:
       - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data

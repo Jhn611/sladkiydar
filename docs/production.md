@@ -1,6 +1,6 @@
 # Production: «Доверху»
 
-Сайт: **https://sladkiydar.ivanjhn.ru**. Сервер: `77.91.115.126`, Ubuntu 24.04, hostname `vm-v3-nano` (в панели — `ru-vmv3-nano`), 2 vCPU, 4 ГБ RAM, 60 ГБ диска и активированный swap 1 ГБ. При настройке установлено ядро `6.8.0-139`, Docker `29.8` и Compose `5.5`.
+Сайт: **https://doverkhu.ru**. Сервер: `77.91.115.126`, Ubuntu 24.04, hostname `vm-v3-nano` (в панели — `ru-vmv3-nano`), 2 vCPU, 4 ГБ RAM, 60 ГБ диска и активированный swap 1 ГБ. При настройке установлено ядро `6.8.0-139`, Docker `29.8` и Compose `5.5`.
 
 ## Размещение и доступ
 
@@ -31,7 +31,7 @@ sudo -i
 cd /opt/sladkiy-dar/current
 docker compose ps
 docker compose logs --tail=50 api worker migrate
-curl --fail --silent --show-error https://sladkiydar.ivanjhn.ru/api/health/ready
+curl --fail --silent --show-error https://doverkhu.ru/api/health/ready
 ```
 
 Не публикуйте полный вывод `docker compose config`, `docker inspect` или содержимое `.env`. Перезапуск процессов без изменения окружения: `docker compose restart api worker`. После изменения `.env` требуется пересоздание контейнеров, а после изменения DB-паролей — предварительный запуск `migrate`; порядок описан в [database-access.md](database-access.md).
@@ -100,12 +100,27 @@ docker compose run --rm migrate
 ln -sfn "$release_dir" /opt/sladkiy-dar/current
 docker compose up -d --no-build --wait
 systemctl start sladkiy-dar-health.service
-curl --fail --silent --show-error https://sladkiydar.ivanjhn.ru/api/health/ready
+curl --fail --silent --show-error https://doverkhu.ru/api/health/ready
 ```
 
 Переходите к следующей команде только после успеха предыдущей; при ошибке backup или миграций остановитесь и устраните причину. Сверьте страницу, готовность API и состояние worker. Проверка HTTP готовности не подтверждает доставку VK; контрольное уведомление согласовывайте отдельно. Не запускайте локальный worker с копией production-базы параллельно серверному.
 
-При смене домена синхронно измените `DOMAIN`, `PUBLIC_ORIGIN`, `VITE_SITE_URL`; web обязательно пересобрать, поскольку canonical и sitemap создаются при сборке.
+## Основной домен и перенаправления
+
+Рабочий домен — `doverkhu.ru`. DNS A-записи `@` и `www` должны вести на `77.91.115.126`; AAAA не добавляется без настроенного IPv6 сервера. В production `.env`:
+
+```dotenv
+DOMAIN=doverkhu.ru
+PUBLIC_ORIGIN=https://doverkhu.ru
+VITE_SITE_URL=https://doverkhu.ru
+REDIRECT_DOMAINS=www.doverkhu.ru sladkiydar.ivanjhn.ru
+```
+
+`REDIRECT_DOMAINS` — необязательный список имён через пробел. Caddy обслуживает HTTPS этих имён и перенаправляет их на `PUBLIC_ORIGIN` кодом 308, сохраняя путь и параметры запроса. DNS дополнительных имён тоже должен указывать на этот сервер. Для локального запуска оставьте список пустым.
+
+При смене домена синхронно измените три основных переменных и список перенаправлений. Web обязательно пересобрать: canonical, OpenGraph, robots и sitemap создаются при сборке. API нужно пересоздать с новым `PUBLIC_ORIGIN`, поскольку он проверяет Origin заявок; обычный restart не обновит окружение. Caddy нужно пересоздать для нового окружения и bind-mount конфигурации. PostgreSQL и миграции для смены домена не нужны.
+
+Сначала проверьте DNS, новую конфигурацию Caddy и сборку web; при переключении сохраните прежний релиз и образ web для отката. После запуска проверьте HTTPS нового имени, перенаправления со старых имён, готовность API и SEO-адреса. Health/backup-скрипты используют текущий релиз и не содержат домена.
 
 ## Откат и восстановление
 
