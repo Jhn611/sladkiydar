@@ -9,7 +9,6 @@ const CasesPage = lazy(() => import('../../pages/cases/CasesPage'));
 const CaseDetailsPage = lazy(() => import('../../pages/case-details/CaseDetailsPage'));
 const ContactsPage = lazy(() => import('../../pages/contacts/ContactsPage'));
 const PrivacyPage = lazy(() => import('../../pages/privacy/PrivacyPage'));
-const AgreementPage = lazy(() => import('../../pages/agreement/AgreementPage'));
 const CatalogPage = lazy(() => import('../../pages/catalog/CatalogPage'));
 function ScrollManager() {
   const { pathname, hash } = useLocation();
@@ -43,7 +42,6 @@ export function AppRouter() {
             <Route path="/cases/:slug" element={<CaseDetailsPage />} />
             <Route path="/contacts" element={<ContactsPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/agreement" element={<AgreementPage />} />
             <Route
               path="*"
               element={

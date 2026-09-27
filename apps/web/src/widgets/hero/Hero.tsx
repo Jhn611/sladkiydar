@@ -24,12 +24,12 @@ const audiences = [
 ];
 const slides = [
   {
-    image: 'hero-team-people-20260922',
+    image: 'hero-team-expanded-20260927',
     title: 'Большой повод для радости',
     alt: 'Коллеги в офисе с подарочными наборами Kinder в коробке и в форме сердца',
   },
   {
-    image: 'hero-children-people-20260922',
+    image: 'hero-children-expanded-20260927',
     title: 'Радость для самых любимых',
     alt: 'Девочка и мальчик с подарочными наборами Kinder',
   },
@@ -245,12 +245,12 @@ export function Hero() {
                 selected.image +
                 '-768.webp 768w, /images/' +
                 selected.image +
-                '.webp 1440w'
+                '.webp 1254w'
               }
               src={'/images/' + selected.image + '.webp'}
               alt={selected.alt}
-              width="1440"
-              height="1080"
+              width="1254"
+              height="1254"
               draggable={false}
               fetchPriority={slide === 0 ? 'high' : 'auto'}
             />

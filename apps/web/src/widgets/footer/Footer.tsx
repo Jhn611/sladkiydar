@@ -54,7 +54,6 @@ export function Footer() {
             © {new Date().getFullYear()} {site.name}
           </span>
           <Link to="/privacy">Политика обработки персональных данных</Link>
-          <Link to="/agreement">Пользовательское соглашение</Link>
         </div>
         <p className={s.legal}>
           Изображения показывают идеи оформления. Фото готовых наборов, точный состав, документы и

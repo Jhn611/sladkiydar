@@ -8,7 +8,7 @@ export function isBusinessOpen(date: Date): boolean {
   }).formatToParts(date);
   const weekday = parts.find((part) => part.type === 'weekday')?.value;
   const hour = Number(parts.find((part) => part.type === 'hour')?.value);
-  return !!weekday && !['Sat', 'Sun'].includes(weekday) && hour >= 9 && hour < 18;
+  return !!weekday && !['Sat', 'Sun'].includes(weekday) && hour >= 9 && hour < 22;
 }
 export function useBusinessStatus() {
   const [open, setOpen] = useState(() => isBusinessOpen(new Date()));

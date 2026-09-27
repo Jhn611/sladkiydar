@@ -10,7 +10,7 @@ test.beforeEach(async ({ page }) => {
   });
 });
 const widths = [375, 430, 768, 1024, 1280, 1440, 1920];
-const paths = ['/', '/catalog', '/contacts', '/privacy', '/agreement'];
+const paths = ['/', '/catalog', '/contacts', '/privacy'];
 const modalTitle = 'Пришлём прайс-лист и подберём набор под ваш бюджет';
 
 async function expectCurrentLeadFields(dialog: Locator) {
@@ -340,6 +340,10 @@ test('showcase changes composition with the keyboard and requests the selected s
 test('legal links open the supplied policy and verified operator details', async ({ page }) => {
   await page.goto('/');
   const footer = page.getByRole('contentinfo');
+  await expect(footer).toContainText('ИП Гуледани Гурам Шалвович');
+  await expect(footer).toContainText('771771661209');
+  await expect(footer).toContainText('321774600775832');
+  await expect(page.getByRole('link', { name: 'Пользовательское соглашение' })).toHaveCount(0);
   await footer.getByRole('link', { name: /политик/i }).click();
   await expect(page).toHaveURL(/\/privacy$/);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Политика конфиденциальности');
@@ -348,15 +352,13 @@ test('legal links open the supplied policy and verified operator details', async
   await expect(page.locator('main')).toContainText('771771661209');
   await expect(page.locator('main')).toContainText('321774600775832');
   await expect(page.locator('main')).not.toContainText('Редакция для макета');
-  await page
-    .getByRole('contentinfo')
-    .getByRole('link', { name: 'Пользовательское соглашение' })
-    .click();
-  await expect(page).toHaveURL(/\/agreement$/);
-  await expect(
-    page.getByRole('heading', { level: 1, name: 'Пользовательское соглашение' }),
-  ).toBeVisible();
-  await expect(page.locator('main')).toContainText('ИП Гуледани Гурам Шалвович');
+  await expect(page.locator('main')).toContainText(
+    'Индивидуальный предприниматель Гуледани Гурам Шалвович',
+  );
+  await expect(page.getByRole('link', { name: 'Пользовательское соглашение' })).toHaveCount(0);
+  await page.goto('/agreement');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Кажется, здесь пусто');
+  await expect(page.locator('main')).not.toContainText('Пользовательское соглашение');
 });
 
 test('public pages show current occasions and delivery terms without wholesale amounts or payment terms', async ({

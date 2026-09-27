@@ -6,11 +6,6 @@ if (!['http:', 'https:'].includes(origin.protocol))
   throw new Error('VITE_SITE_URL must use http or https');
 const routes = [
   [
-    '/agreement',
-    'Пользовательское соглашение — Доверху',
-    'Условия использования сайта и запроса информации о подарочных наборах.',
-  ],
-  [
     '/',
     'Киндер наборы оптом — подарки с продукцией Kinder',
     'Наборы с продукцией Kinder оптом для магазинов, компаний и праздников. Подбор состава и оформления.',
@@ -64,7 +59,7 @@ const fontPreloads = (await readdir('dist/assets'))
   .join('');
 // Match Hero.tsx sizes so the browser reuses this request, including mobile DPR 2.
 const heroPreload =
-  '<link rel="preload" as="image" href="/images/hero-team-people-20260922.webp" imagesrcset="/images/hero-team-people-20260922-768.webp 768w, /images/hero-team-people-20260922.webp 1440w" imagesizes="(max-width: 500px) calc(100vw - 40px), (max-width: 950px) 92vw, (max-width: 1435px) 44vw, 634px" fetchpriority="high"/>';
+  '<link rel="preload" as="image" href="/images/hero-team-expanded-20260927.webp" imagesrcset="/images/hero-team-expanded-20260927-768.webp 768w, /images/hero-team-expanded-20260927.webp 1254w" imagesizes="(max-width: 500px) calc(100vw - 40px), (max-width: 950px) 92vw, (max-width: 1435px) 44vw, 634px" fetchpriority="high"/>';
 for (const [path, pageTitle, description] of routes) {
   const title = pageTitle.includes('Доверху') ? pageTitle : pageTitle + ' — Доверху';
   const canonical = new URL(path, origin).href;
@@ -78,7 +73,7 @@ for (const [path, pageTitle, description] of routes) {
     '"/><meta data-rh="true" property="og:url" content="' +
     escape(canonical) +
     '"/><meta data-rh="true" property="og:image" content="' +
-    escape(new URL('/images/hero-team-people-20260922.webp', origin).href) +
+    escape(new URL('/images/hero-team-expanded-20260927.webp', origin).href) +
     '"/><meta data-rh="true" name="twitter:card" content="summary_large_image"/>';
   const html = template
     .replace(/<title>.*?<\/title>/, '<title>' + escape(title) + '</title>')
@@ -95,7 +90,7 @@ await writeFile(
   'dist/sitemap.xml',
   '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
     routes
-      .filter(([path]) => !['/privacy', '/agreement'].includes(path))
+      .filter(([path]) => path !== '/privacy')
       .map(([path]) => '<url><loc>' + escape(new URL(path, origin).href) + '</loc></url>')
       .join('') +
     '</urlset>',

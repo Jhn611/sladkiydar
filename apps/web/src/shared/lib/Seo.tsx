@@ -25,7 +25,7 @@ export function Seo({
       <meta property="og:url" content={canonical} />
       <meta
         property="og:image"
-        content={new URL('/images/hero-team-people-20260922.webp', origin).href}
+        content={new URL('/images/hero-team-expanded-20260927.webp', origin).href}
       />
       <meta name="twitter:card" content="summary_large_image" />
     </Helmet>

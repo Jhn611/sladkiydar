@@ -5,7 +5,7 @@ export const site = {
   phone: '+7 (929) 629-29-44',
   phoneHref: 'tel:+79296292944',
   email: '',
-  workingHours: '09:00–18:00 · пн–пт · МСК',
+  workingHours: '09:00–22:00 · пн–пт · МСК',
   inn: '771771661209',
   ogrnip: '321774600775832',
   address: '',
