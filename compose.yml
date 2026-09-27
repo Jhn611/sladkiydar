@@ -42,6 +42,7 @@ services:
       DOMAIN: ${DOMAIN:?Set DOMAIN in .env}
       PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:?Set PUBLIC_ORIGIN in .env}
       REDIRECT_DOMAINS: ${REDIRECT_DOMAINS:-}
+      REDIRECT_MATCH_HOSTS: ${REDIRECT_DOMAINS:-redirect.invalid}
     volumes:
       - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data

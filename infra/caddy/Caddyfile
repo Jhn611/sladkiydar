@@ -5,7 +5,7 @@
 {$DOMAIN:http://localhost} {$REDIRECT_DOMAINS} {
 	encode zstd gzip
 
-	@aliases host {$REDIRECT_DOMAINS:redirect.invalid}
+	@aliases host {$REDIRECT_MATCH_HOSTS:redirect.invalid}
 	redir @aliases {$PUBLIC_ORIGIN:http://localhost}{uri} 308
 
 	header {
