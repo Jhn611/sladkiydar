@@ -12,13 +12,13 @@ export function Experience() {
         <div className={s.heading}>
           <span className="eyebrow">Наш опыт — ваши улыбки</span>
           <h2>
-            Более 100 000 наборов уже собрано
+            Более 320 000 наборов уже собрано
             <br />
             <span>и передано получателям</span>
           </h2>
         </div>
         <div className={s.number}>
-          100 000<span>+</span>
+          320 000<span>+</span>
           <Icon name="heart" size={65} />
         </div>
         <div className={s.bottom}>

@@ -189,7 +189,7 @@ export function Hero() {
             </p>
             <div className={s.social}>
               <strong>
-                100 000<span>+</span>
+                320 000<span>+</span>
               </strong>
               <span>
                 наборов уже нашли
